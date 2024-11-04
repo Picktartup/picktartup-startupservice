@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 
 public class StartupServiceRequest {
-    private String name; // 스타트업 이름
-    private String category; // 카테고리
-    private LocalDateTime contractStartDate; // 시작 기한
-    private LocalDateTime contractTargetDeadline; // 마감 기한
-    private int progress; // 진행도 (백분율)
-    private int currentCoin; // 모인 코인
-    private int goalCoin; // 목표 코인
+    private String name;
+    private String category;
+    private LocalDateTime contractStartDate;
+    private LocalDateTime contractTargetDeadline;
+    private int progress;
+    private int currentCoin;
+    private int goalCoin;
 }

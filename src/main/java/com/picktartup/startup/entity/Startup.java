@@ -30,13 +30,10 @@ public class Startup {
     private String category;
     private String progress;
     private Double ssi;
-    // 계약 시작 날짜
     private LocalDateTime contractStartDate;
-    // 계약 목표만료 기한
     private LocalDateTime contractTargetDeadline;
     private Integer goalCoin;
     private Double expectedReturn;
-    // 모금코인 추가
     private Integer currentCoin;
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)

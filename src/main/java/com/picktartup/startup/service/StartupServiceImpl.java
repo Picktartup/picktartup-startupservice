@@ -20,7 +20,7 @@ public class StartupServiceImpl implements StartupService {
         this.startupRepository = startupRepository;
     }
 
-    // 진행도가 높은 상위 6개 스타트업 조회
+
     public List<StartupServiceRequest> getTop6StartupsByProgress() {
         List<Startup> startups = startupRepository.findTop6ByOrderByProgressDesc();
         return startups.stream()
@@ -28,16 +28,17 @@ public class StartupServiceImpl implements StartupService {
                 .collect(Collectors.toList());
     }
 
-    // 엔티티를 DTO로 변환하는 메서드
+
     private StartupServiceRequest convertToServiceRequest(Startup startup) {
         int progress = Integer.parseInt(startup.getProgress().replace("%", ""));
         return StartupServiceRequest.builder()
                 .name(startup.getName())
                 .category(startup.getCategory())
-                .contractStartDate(LocalDateTime.from(startup.getContractStartDate().toLocalDate()))
-                .contractTargetDeadline(LocalDateTime.from(startup.getContractTargetDeadline().toLocalDate()))
+                .contractStartDate(startup.getContractStartDate()) // LocalDateTime 그대로 사용
+                .contractTargetDeadline(startup.getContractTargetDeadline()) // LocalDateTime 그대로 사용
                 .progress(progress)
                 .currentCoin(startup.getCurrentCoin())
                 .build();
     }
+
 }
