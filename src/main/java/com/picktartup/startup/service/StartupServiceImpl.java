@@ -28,6 +28,23 @@ public class StartupServiceImpl implements StartupService {
                 .collect(Collectors.toList());
     }
 
+    // 전체 스타트업 리스트 조회
+    @Override
+    public List<StartupServiceRequest> getAllStartups() {
+        List<Startup> startups = startupRepository.findAll();
+        return startups.stream()
+                .map(this::convertToServiceRequest)
+                .collect(Collectors.toList());
+    }
+
+    // 키워드로 스타트업 검색
+    @Override
+    public List<StartupServiceRequest> searchStartupsByKeyword(String keyword) {
+        List<Startup> startups = startupRepository.findByNameContainingOrDescriptionContaining(keyword, keyword);
+        return startups.stream()
+                .map(this::convertToServiceRequest)
+                .collect(Collectors.toList());
+    }
 
     private StartupServiceRequest convertToServiceRequest(Startup startup) {
         int progress = Integer.parseInt(startup.getProgress().replace("%", ""));
