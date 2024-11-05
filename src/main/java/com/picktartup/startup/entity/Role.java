@@ -1,4 +1,4 @@
-package com.picktartup.startup.Entity;
+package com.picktartup.startup.entity;
 
 public enum Role {
     ADMIN,

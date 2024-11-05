@@ -1,4 +1,4 @@
-package com.picktartup.startup.Entity;
+package com.picktartup.startup.entity;
 
 
 import jakarta.persistence.*;
@@ -30,10 +30,11 @@ public class Startup {
     private String category;
     private String progress;
     private Double ssi;
-    private LocalDateTime contractDeadline;
+    private LocalDateTime contractStartDate;
     private LocalDateTime contractTargetDeadline;
     private Integer goalCoin;
     private Double expectedReturn;
+    private Integer currentCoin;
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)
     private Set<Contract> contracts;
