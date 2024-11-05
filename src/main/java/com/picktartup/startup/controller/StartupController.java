@@ -21,6 +21,7 @@ public class StartupController {
         this.startupService = startupService;
     }
 
+
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllStartups() {
         List<StartupServiceRequest> startups = startupService.getTop6StartupsByProgress();
