@@ -1,4 +1,4 @@
-package com.picktartup.startup.repository;
+package com.picktartup.startup.repository.jpa;
 
 import com.picktartup.startup.entity.Startup;
 import org.springframework.data.jpa.repository.EntityGraph;
