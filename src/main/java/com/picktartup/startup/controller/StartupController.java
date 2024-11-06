@@ -1,7 +1,6 @@
 package com.picktartup.startup.controller;
 
 import com.picktartup.startup.dto.StartupServiceRequest;
-import com.picktartup.startup.entity.Startup;
 import com.picktartup.startup.service.StartupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,9 @@ public class StartupController {
     }
 
     // 메인 화면: 상위 6개 스타트업 조회
+
     @GetMapping("/top")
-    public ResponseEntity<Map<String, Object>> getTopStartups() {
+    public ResponseEntity<Map<String, Object>> getAllStartups() {
         List<StartupServiceRequest> startups = startupService.getTop6StartupsByProgress();
         Map<String, Object> response = new HashMap<>();
         response.put("status", 200);
