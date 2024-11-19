@@ -13,6 +13,54 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
+    networks:
+      - default  # 네트워크 추가
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    restart: always
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.6
+    container_name: logstash
+    ports:
+      - "5044:5044"  # Logstash가 데이터를 받을 포트
+    volumes:
+      - "./logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+      - "./postgresql-42.7.4.jar:/usr/share/logstash/logstash-core/lib/jars/postgresql-42.7.4.jar"
+    environment:
+      - POSTGRES_USER=fisa3
+      - POSTGRES_PASSWORD=fisa1234
+      - POSTGRES_DB=startup
+    restart: always
+
+    networks:
+      - default  # 네트워크 추가
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.6
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    restart: always
+    networks:
+      - default  # 네트워크 추가
 
 volumes:
   postgres_data:
+  es_data:
+
+networks:
+  default:
+    external: false
+

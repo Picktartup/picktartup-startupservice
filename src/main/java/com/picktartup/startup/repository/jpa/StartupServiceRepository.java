@@ -1,4 +1,4 @@
-package com.picktartup.startup.repository;
+package com.picktartup.startup.repository.jpa;
 
 import com.picktartup.startup.entity.Startup;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -11,6 +11,5 @@ import java.util.List;
 public interface StartupServiceRepository extends JpaRepository<Startup, Long> {
 
     @EntityGraph(attributePaths = {"wallet"})
-    // 진행도가 높은 순으로 상위 6개 스타트업 조회
     List<Startup> findTop6ByOrderByProgressDesc();
 }
