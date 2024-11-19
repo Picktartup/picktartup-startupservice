@@ -1,5 +1,6 @@
 package com.picktartup.startup.controller;
 
+import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
 import com.picktartup.startup.service.StartupService;
@@ -24,6 +25,11 @@ public class StartupController {
     }
 
     // 메인 화면: 상위 6개 스타트업 조회
+
+    @GetMapping("health_check")
+    public ResponseEntity<ApiResponse<String>> healthCheck() {
+        return ResponseEntity.ok(ApiResponse.ok("서비스가 정상 작동 중입니다."));
+    }
 
     @GetMapping("/top")
     public ResponseEntity<Map<String, Object>> getTopStartups() {

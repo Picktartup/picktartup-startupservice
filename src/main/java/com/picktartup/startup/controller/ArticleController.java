@@ -1,5 +1,6 @@
 package com.picktartup.startup.controller;
 
+import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.entity.Article;
 
 import com.picktartup.startup.repository.mongoDB.ArticleRepository;
@@ -26,6 +27,10 @@ public class ArticleController {
         this.articleRepository = articleRepository;
     }
 
+    @GetMapping("health_check")
+    public ResponseEntity<ApiResponse<String>> healthCheck() {
+        return ResponseEntity.ok(ApiResponse.ok("서비스가 정상 작동 중입니다."));
+    }
     // URL 입력 후 MongoDB에 기사 저장
     @PostMapping
     public ResponseEntity<Map<String, Object>> saveArticle(
