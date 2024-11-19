@@ -1,21 +1,23 @@
-package com.picktartup.startup.entity;
+// src/main/java/com/picktartup/startup/dto/StartupElasticsearch.java
+package com.picktartup.startup.dto;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(indexName = "startups")
-public class ElasticsearchStartupEntity {
+public class StartupElasticsearch {
 
     @Id
     @Field(type = FieldType.Long)
@@ -27,10 +29,10 @@ public class ElasticsearchStartupEntity {
     @Field(type = FieldType.Text)
     private String description;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String category;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String progress;
 
     @Field(type = FieldType.Double)
@@ -40,7 +42,7 @@ public class ElasticsearchStartupEntity {
     private LocalDateTime investmentStartDate;
 
     @Field(name = "investment_target_deadline", type = FieldType.Date, format = DateFormat.date_optional_time)
-    private LocalDateTime investmentDeadline;
+    private LocalDateTime investmentTargetDeadline;
 
     @Field(name = "goal_coin", type = FieldType.Integer)
     private Integer goalCoin;
@@ -54,5 +56,20 @@ public class ElasticsearchStartupEntity {
     @Field(name = "wallet_id", type = FieldType.Long)
     private Long walletId;
 
+    @Field(name = "funding_progress", type = FieldType.Integer)
+    private Integer fundingProgress;
 
+    @Field(name = "investment_status",type = FieldType.Text)
+    private String investmentStatus;
+    @Field(name = "investment_round",type = FieldType.Text)
+    private String investmentRound;
+    private List<SSIElasticsearch> ssiList;
+
+    public void calculateAndSetFundingProgress() {
+        if (this.goalCoin == null || this.goalCoin == 0 || this.currentCoin == null) {
+            this.fundingProgress = 0;
+        } else {
+            this.fundingProgress = (int) ((double) this.currentCoin / this.goalCoin * 100);
+        }
+    }
 }
