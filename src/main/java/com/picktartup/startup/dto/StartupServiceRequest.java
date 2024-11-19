@@ -17,7 +17,8 @@ public class StartupServiceRequest {
     private String category;
     private LocalDateTime contractStartDate;
     private LocalDateTime contractTargetDeadline;
-    private int progress;
+    private String progress;
     private int currentCoin;
     private int goalCoin;
+    private double fundingProgress; //목표 대비 모금 진행 상황 추가
 }
