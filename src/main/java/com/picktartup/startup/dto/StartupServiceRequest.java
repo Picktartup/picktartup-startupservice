@@ -25,4 +25,9 @@ public class StartupServiceRequest {
 
     private String investmentStatus;
     private String investmentRound;
+
+    private String address;
+    private String ceoName;
+    private String page;
+    private String establishmentDate;
 }

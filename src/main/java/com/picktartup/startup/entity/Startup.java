@@ -32,13 +32,20 @@ public class Startup {
     private LocalDateTime investmentStartDate;
     private LocalDateTime investmentTargetDeadline;
     private Integer goalCoin;
-    private Double expectedReturn;
     private Integer currentCoin;
     private Integer fundingProgress;
-
-    //투자 상태, 투자 라운드 추가
     private String investmentStatus;
     private String investmentRound;
+
+    //예상 수익률, 실제 수익률, 사업장 주소, 대표 이름, 사업자 등록 번호, 계약 기간, 홈페이지, 설립일자 추가
+    private String expectedROI;
+    private String ROI;
+    private String address;
+    private String ceoName;
+    private String registrationNum;
+    private Integer contractPeriod;
+    private String page;
+    private String establishmentDate;
 
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -46,4 +53,5 @@ public class Startup {
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)
     private Set<Contract> contracts;
+
 }

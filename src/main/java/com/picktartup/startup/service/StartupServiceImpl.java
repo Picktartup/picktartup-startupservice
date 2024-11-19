@@ -99,6 +99,10 @@ public class StartupServiceImpl implements StartupService {
                         .collect(Collectors.toList()))
                 .investmentRound(startup.getInvestmentRound())
                 .investmentStatus(startup.getInvestmentStatus())
+                .ceoName(startup.getCeoName())
+                .address(startup.getAddress())
+                .page(startup.getPage())
+                .establishmentDate(startup.getEstablishmentDate())
                 .build();
     }
 
@@ -115,6 +119,10 @@ public class StartupServiceImpl implements StartupService {
                 .goalCoin(startup.getGoalCoin())
                 .fundingProgress(startup.getFundingProgress())
                 .ssiList(ssiList)
+                .ceoName(startup.getCeoName())
+                .address(startup.getAddress())
+                .page(startup.getPage())
+                .establishmentDate(startup.getEstablishmentDate())
                 .build();
     }
 

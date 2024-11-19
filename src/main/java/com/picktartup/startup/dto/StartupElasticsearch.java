@@ -72,4 +72,12 @@ public class StartupElasticsearch {
             this.fundingProgress = (int) ((double) this.currentCoin / this.goalCoin * 100);
         }
     }
+    @Field(name = "address", type = FieldType.Text)
+    private String address;
+    @Field(name = "ceo_name", type = FieldType.Text)
+    private String ceoName;
+    @Field(name = "page", type = FieldType.Text)
+    private String page;
+    @Field(name = "establishment_date", type = FieldType.Text)
+    private String establishmentDate;
 }
