@@ -1,24 +1,33 @@
 package com.picktartup.startup.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class StartupServiceRequest {
+
+    private Long startupId;
     private String name;
+    private String description;
     private String category;
-    private LocalDateTime contractStartDate;
-    private LocalDateTime contractTargetDeadline;
+    private LocalDateTime investmentStartDate;
+    private LocalDateTime investmentTargetDeadline;
     private String progress;
-    private int currentCoin;
-    private int goalCoin;
-    private double fundingProgress; //목표 대비 모금 진행 상황 추가
+    private Integer currentCoin;
+    private Integer goalCoin;
+    private int fundingProgress;
+    private List<SSIServiceRequest> ssiList;
+
+    private String investmentStatus;
+    private String investmentRound;
+
+    private String address;
+    private String ceoName;
+    private String page;
+    private String establishmentDate;
 }
