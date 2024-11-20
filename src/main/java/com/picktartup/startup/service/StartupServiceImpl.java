@@ -32,12 +32,11 @@ public class StartupServiceImpl implements StartupService {
 
     @Override
     public List<StartupServiceRequest> getTop6StartupsByProgress() {
-        return startupRepository.findAll().stream()
+        return startupRepository.findTop6ByOrderByFundingProgressDesc().stream()
                 .map(this::convertJpaToDto)
-                .sorted((s1, s2) -> Integer.compare(s2.getFundingProgress(), s1.getFundingProgress()))
-                .limit(6)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public List<StartupElasticsearch> findAllStartupsInElasticsearch() {
@@ -86,23 +85,25 @@ public class StartupServiceImpl implements StartupService {
         return StartupServiceRequest.builder()
                 .startupId(startup.getStartupId())
                 .name(startup.getName())
-                .description(startup.getDescription())
+                .description(startup.getStartupDetails().getDescription())
                 .category(startup.getCategory())
                 .investmentStartDate(startup.getInvestmentStartDate())
                 .investmentTargetDeadline(startup.getInvestmentTargetDeadline())
-                .progress(startup.getProgress())
+                .progress(startup.getProgress() != null ? startup.getProgress().toString() : "0")  // Integer -> String 변환
                 .currentCoin(startup.getCurrentCoin())
                 .goalCoin(startup.getGoalCoin())
-                .fundingProgress(calculateFundingProgress(startup.getCurrentCoin(), startup.getGoalCoin()))
+                .fundingProgress(startup.getFundingProgress() != null ?
+                        startup.getFundingProgress() :
+                        calculateFundingProgress(startup.getCurrentCoin(), startup.getGoalCoin()))
                 .ssiList(startup.getSsi().stream()
                         .map(this::convertSsiToDto)
                         .collect(Collectors.toList()))
-                .investmentRound(startup.getInvestmentRound())
-                .investmentStatus(startup.getInvestmentStatus())
-                .ceoName(startup.getCeoName())
-                .address(startup.getAddress())
-                .page(startup.getPage())
-                .establishmentDate(startup.getEstablishmentDate())
+                .investmentRound(startup.getStartupDetails().getInvestmentRound())
+                .investmentStatus(startup.getStartupDetails().getInvestmentStatus())
+                .ceoName(startup.getStartupDetails().getCeoName())
+                .address(startup.getStartupDetails().getAddress())
+                .page(startup.getStartupDetails().getPage())
+                .establishmentDate(startup.getStartupDetails().getEstablishmentDate())
                 .build();
     }
 

@@ -18,40 +18,55 @@ public class Startup {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "startup_seq_generator")
     @SequenceGenerator(name = "startup_seq_generator", sequenceName = "startup_seq", allocationSize = 1)
-    @Column(name = "startup_id")
+    @Column(name = "startup_id",nullable = false)
     private Long startupId;
+
+    @Column(name = "name", nullable = false, length = 20)
+    private String name;
+
+    @Column(name = "category", nullable = false, length = 100)
+    private String category;
+
+    @Column(name = "progress", nullable = false)
+    private Integer progress;
+
+    @Column(name = "investment_start_date", nullable = false)
+    private LocalDateTime investmentStartDate;
+
+    @Column(name = "investment_target_deadline", nullable = false)
+    private LocalDateTime investmentTargetDeadline;
+
+    @Column(name = "goal_coin", nullable = false)
+    private Integer goalCoin;
+
+    @Column(name = "current_coin")
+    private Integer currentCoin;
+
+    @Column(name = "funding_progress")
+    private Integer fundingProgress;
 
     @OneToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
-    private String name;
-    private String description;
-    private String category;
-    private String progress;
-    private LocalDateTime investmentStartDate;
-    private LocalDateTime investmentTargetDeadline;
-    private Integer goalCoin;
-    private Integer currentCoin;
-    private Integer fundingProgress;
-    private String investmentStatus;
-    private String investmentRound;
-
-    //예상 수익률, 실제 수익률, 사업장 주소, 대표 이름, 사업자 등록 번호, 계약 기간, 홈페이지, 설립일자 추가
-    private String expectedROI;
-    private String ROI;
-    private String address;
-    private String ceoName;
-    private String registrationNum;
-    private Integer contractPeriod;
-    private String page;
-    private String establishmentDate;
-
+    @OneToOne(mappedBy = "startup" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private StartupDetails startupDetails;
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SSI> ssi;
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)
     private Set<Contract> contracts;
+
+
+    @PrePersist
+    @PreUpdate
+    public void calculateFundingProgress() {
+        if (this.currentCoin != null && this.goalCoin != null && this.goalCoin > 0) {
+            this.fundingProgress = (int) ((double) this.currentCoin / this.goalCoin * 100);
+        }else {
+            this.fundingProgress = 0;  // null 대신 0으로 설정
+        }
+    }
 
 }

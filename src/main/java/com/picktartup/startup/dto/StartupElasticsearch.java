@@ -61,8 +61,10 @@ public class StartupElasticsearch {
 
     @Field(name = "investment_status",type = FieldType.Text)
     private String investmentStatus;
+
     @Field(name = "investment_round",type = FieldType.Text)
     private String investmentRound;
+
     private List<SSIElasticsearch> ssiList;
 
     public void calculateAndSetFundingProgress() {
@@ -74,10 +76,13 @@ public class StartupElasticsearch {
     }
     @Field(name = "address", type = FieldType.Text)
     private String address;
+
     @Field(name = "ceo_name", type = FieldType.Text)
     private String ceoName;
+
     @Field(name = "page", type = FieldType.Text)
     private String page;
+
     @Field(name = "establishment_date", type = FieldType.Text)
     private String establishmentDate;
 }

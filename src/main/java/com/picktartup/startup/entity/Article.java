@@ -11,9 +11,9 @@ import java.util.Date;
 public class Article {
     @Id
     private String id;
-    private String url;          // URL만 입력
-    private String title;        // Spring Boot가 자동으로 채움
-    private String imageUrl;     // Spring Boot가 자동으로 채움
-    private String keyword;      // 사용자가 입력한 키워드
+    private String url;
+    private String title;
+    private String imageUrl;
+    private String keyword;
     private Date createdAt;
 }

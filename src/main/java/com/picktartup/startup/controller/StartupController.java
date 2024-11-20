@@ -24,13 +24,13 @@ public class StartupController {
         this.startupService = startupService;
     }
 
-    // 메인 화면: 상위 6개 스타트업 조회
-
+    // 서비스 상태 확인
     @GetMapping("health_check")
     public ResponseEntity<ApiResponse<String>> healthCheck() {
         return ResponseEntity.ok(ApiResponse.ok("서비스가 정상 작동 중입니다."));
     }
 
+    // 메인 화면: 상위 6개 스타트업 조회
     @GetMapping("/top")
     public ResponseEntity<Map<String, Object>> getTopStartups() {
         List<StartupServiceRequest> startups = startupService.getTop6StartupsByProgress();

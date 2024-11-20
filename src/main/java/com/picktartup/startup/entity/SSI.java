@@ -17,21 +17,36 @@ public class SSI {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssi_seq_generator")
     @SequenceGenerator(name = "ssi_seq_generator", sequenceName = "ssi_seq", allocationSize = 1)
-    @Column(name = "ssi_id")
+    @Column(name = "ssi_id",nullable = false)
     private Long ssiId;
 
-    // Many-to-One 관계 설정: Startup과 연결
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "startup_id", nullable = false)
-    private Startup startup;
 
+    @Column(name = "people_grade", nullable = false, length = 10)
     private String peopleGrade;
+
+    @Column(name = "product_grade", nullable = false, length = 10)
     private String productGrade;
+
+    @Column(name = "performance_grade", nullable = false, length = 10)
     private String performanceGrade;
+
+    @Column(name = "potential_grade", nullable = false, length = 10)
     private String potentialGrade;
+
+    @Column(name = "eval_date", nullable = false)
     private LocalDateTime evalDate;
 
-    @Column(columnDefinition = "text")
+
+    @Column(name = "eval_description", columnDefinition = "text")
     private String evalDescription;
 
+    @Column(name = "startup_id", nullable = false)
+    private Long startupId;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "startup_id", insertable = false, updatable = false)
+    private Startup startup;
 }
