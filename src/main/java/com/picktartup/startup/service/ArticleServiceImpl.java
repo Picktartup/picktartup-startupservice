@@ -1,4 +1,4 @@
-package com.picktartup.startup.service.impl;
+package com.picktartup.startup.service;
 
 import com.picktartup.startup.entity.Article;
 import com.picktartup.startup.repository.mongoDB.ArticleRepository;
