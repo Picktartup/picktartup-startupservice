@@ -21,10 +21,14 @@ CREATE TABLE startup_details (
                                  ceo_name VARCHAR(10) NOT NULL,
                                  page VARCHAR(30) NOT NULL,
                                  establishment_date VARCHAR(30) NOT NULL,
+                                 contract_period int4 NOT NULL,
                                  expected_roi FLOAT8,
                                  roi FLOAT8,
                                  CONSTRAINT fk_startup_id FOREIGN KEY (startup_id) REFERENCES startup(startup_id)
 );
+
+
+
 
 CREATE TABLE ssi (
                      ssi_id BIGINT NOT NULL PRIMARY KEY,
@@ -35,7 +39,6 @@ CREATE TABLE ssi (
                      potential_grade VARCHAR(10) NOT NULL,
                      product_grade VARCHAR(10) NOT NULL,
                      startup_id BIGINT NOT NULL,
-                     user_id BIGINT NOT NULL,
                      CONSTRAINT fk_startup_id_ssi FOREIGN KEY (startup_id) REFERENCES startup(startup_id)
 );
 
