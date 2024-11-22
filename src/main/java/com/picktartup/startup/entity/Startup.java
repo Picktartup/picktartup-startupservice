@@ -54,7 +54,8 @@ public class Startup {
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SSI> ssi;
-    
+
+
 
     @PrePersist
     @PreUpdate
