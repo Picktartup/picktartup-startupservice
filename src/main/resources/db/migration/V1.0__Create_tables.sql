@@ -9,7 +9,6 @@ CREATE TABLE startup (
                          current_coin FLOAT8,
                          funding_progress INTEGER,
                          wallet_id BIGINT NOT NULL,
-                         CONSTRAINT fk_wallet_id FOREIGN KEY (wallet_id) REFERENCES wallet(wallet_id)
 );
 
 
