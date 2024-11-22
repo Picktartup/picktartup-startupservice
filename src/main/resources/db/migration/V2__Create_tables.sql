@@ -24,6 +24,7 @@ CREATE TABLE startup_details (
                                  contract_period int4 NOT NULL,
                                  expected_roi FLOAT8,
                                  roi FLOAT8,
+                                 registration_num VARCHAR(20) NOT NULL,
                                  CONSTRAINT fk_startup_id FOREIGN KEY (startup_id) REFERENCES startup(startup_id)
 );
 
