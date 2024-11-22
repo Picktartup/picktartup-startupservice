@@ -11,5 +11,16 @@ spring:
     rest:
       uris: http://localhost:9200
 
+
+  task:
+    scheduling:
+      pool:
+        size: 2
+      thread-name-prefix: scheduled-task-
+
+
+  profiles:
+    include: secret
+
 server:
   port: 8080
