@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Table(name ="contract")
-@Entity
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_seq_generator")
