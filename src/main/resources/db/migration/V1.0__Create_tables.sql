@@ -8,7 +8,7 @@ CREATE TABLE startup (
                          goal_coin INTEGER NOT NULL,
                          current_coin FLOAT8,
                          funding_progress INTEGER,
-                         wallet_id BIGINT NOT NULL,
+                         wallet_id BIGINT NOT NULL
 );
 
 
