@@ -40,14 +40,14 @@ public class Startup {
     private Integer goalCoin;
 
     @Column(name = "current_coin")
-    private Integer currentCoin;
+    private Double currentCoin;
 
     @Column(name = "funding_progress")
     private Integer fundingProgress;
 
-    @OneToOne
-    @JoinColumn(name = "wallet_id", nullable = false)
-    private Wallet wallet;
+
+    @Column(name = "wallet_id" , nullable = false)
+    private Long walletId;
 
     @OneToOne(mappedBy = "startup" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StartupDetails startupDetails;

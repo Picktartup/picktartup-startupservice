@@ -48,7 +48,7 @@ public class StartupElasticsearch {
     private Integer goalCoin;
 
     @Field(name = "current_coin", type = FieldType.Integer)
-    private Integer currentCoin;
+    private Double currentCoin;
 
     @Field(name = "expected_return", type = FieldType.Double)
     private Double expectedReturn;

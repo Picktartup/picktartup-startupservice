@@ -151,7 +151,7 @@ public class StartupServiceImpl implements StartupService {
                 .build();
     }
 
-    private int calculateFundingProgress(Integer currentCoin, Integer goalCoin) {
+    private int calculateFundingProgress(Double currentCoin, Integer goalCoin) {
         if (currentCoin == null || goalCoin == null || goalCoin == 0) {
             return 0;
         }

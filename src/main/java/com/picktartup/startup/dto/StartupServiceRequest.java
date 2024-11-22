@@ -18,7 +18,7 @@ public class StartupServiceRequest {
     private LocalDateTime investmentStartDate;
     private LocalDateTime investmentTargetDeadline;
     private String progress;
-    private Integer currentCoin;
+    private Double currentCoin;
     private Integer goalCoin;
     private int fundingProgress;
     private List<SSIServiceRequest> ssiList;
