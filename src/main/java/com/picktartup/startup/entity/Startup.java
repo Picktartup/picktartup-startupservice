@@ -45,6 +45,7 @@ public class Startup {
     @Column(name = "funding_progress")
     private Integer fundingProgress;
 
+
     @Column(name = "wallet_id" , nullable = false)
     private Long walletId;
 
@@ -54,8 +55,6 @@ public class Startup {
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SSI> ssi;
 
-    @Column(name = "contract_ids")
-    private Long contractId;
 
 
     @PrePersist
@@ -67,4 +66,5 @@ public class Startup {
             this.fundingProgress = 0;  // null 대신 0으로 설정
         }
     }
+
 }
