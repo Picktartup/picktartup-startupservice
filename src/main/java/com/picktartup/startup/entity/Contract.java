@@ -1,4 +1,4 @@
-package com.picktartup.startup.Entity;
+package com.picktartup.startup.entity;
 
 
 import jakarta.persistence.*;
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Table(name ="contract")
-@Entity
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_seq_generator")

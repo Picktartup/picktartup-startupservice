@@ -1,4 +1,4 @@
-package com.picktartup.startup.Entity;
+package com.picktartup.startup.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,6 @@ import lombok.*;
 @Setter
 @Getter
 @Table(name = "contractdetails")
-@Entity
 public class ContractDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "details_seq_generator")

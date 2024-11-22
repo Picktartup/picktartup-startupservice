@@ -1,10 +1,8 @@
-package com.picktartup.startup.Entity;
+package com.picktartup.startup.entity;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -12,7 +10,6 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "wallet")
-@Entity
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wallet_seq_generator")
