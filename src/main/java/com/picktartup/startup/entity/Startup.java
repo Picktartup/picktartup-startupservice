@@ -1,25 +1,14 @@
 package com.picktartup.startup.entity;
 
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @Table(name = "startup")
@@ -27,30 +16,57 @@ import java.util.Set;
 public class Startup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "startup_id") // 기본 키로 설정
-    private Long startupId; // 유일한 ID 필드
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "startup_seq_generator")
+    @SequenceGenerator(name = "startup_seq_generator", sequenceName = "startup_seq", allocationSize = 1)
+    @Column(name = "startup_id",nullable = false)
+    private Long startupId;
 
-    @OneToOne
-    @JoinColumn(name = "wallet_id", nullable = false)
-    private Wallet wallet;
-
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
-    private String description;
-    private String category;
-    private String progress;
-    private Double ssi;
-    private LocalDateTime contractStartDate;
-    private LocalDateTime contractTargetDeadline;
-    private Integer goalCoin;
-    private Double expectedReturn;
-    private Integer currentCoin;
 
-    @Transient
-    public int getFundingProgress() {
-        return (goalCoin != null && goalCoin > 0) ? (int) ((double) currentCoin / goalCoin * 100) : 0;
-    }
+    @Column(name = "category", nullable = false, length = 100)
+    private String category;
+
+    @Column(name = "progress", nullable = false)
+    private Integer progress;
+
+    @Column(name = "investment_start_date", nullable = false)
+    private LocalDateTime investmentStartDate;
+
+    @Column(name = "investment_target_deadline", nullable = false)
+    private LocalDateTime investmentTargetDeadline;
+
+    @Column(name = "goal_coin", nullable = false)
+    private Integer goalCoin;
+
+    @Column(name = "current_coin")
+    private Double currentCoin;
+
+    @Column(name = "funding_progress")
+    private Integer fundingProgress;
+
+
+    @Column(name = "wallet_id" , nullable = false)
+    private Long walletId;
+
+    @OneToOne(mappedBy = "startup" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private StartupDetails startupDetails;
+
+    @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<SSI> ssi;
 
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)
     private Set<Contract> contracts;
+
+
+    @PrePersist
+    @PreUpdate
+    public void calculateFundingProgress() {
+        if (this.currentCoin != null && this.goalCoin != null && this.goalCoin > 0) {
+            this.fundingProgress = (int) ((double) this.currentCoin / this.goalCoin * 100);
+        }else {
+            this.fundingProgress = 0;  // null 대신 0으로 설정
+        }
+    }
+
 }

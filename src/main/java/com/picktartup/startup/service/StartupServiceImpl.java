@@ -1,13 +1,13 @@
 package com.picktartup.startup.service;
 
-import com.picktartup.startup.dto.StartupServiceRequest;
+import com.picktartup.startup.dto.*;
+import com.picktartup.startup.entity.SSI;
 import com.picktartup.startup.entity.Startup;
-import com.picktartup.startup.entity.ElasticsearchStartupEntity;
+import com.picktartup.startup.repository.elasticsearch.SSIElasticsearchRepository;
 import com.picktartup.startup.repository.elasticsearch.StartupElasticsearchRepository;
 import com.picktartup.startup.repository.jpa.StartupServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,78 +18,143 @@ public class StartupServiceImpl implements StartupService {
 
     private final StartupServiceRepository startupRepository;
     private final StartupElasticsearchRepository startupElasticsearchRepository;
-    private final RestTemplate restTemplate; // RestTemplate 필드 추가
+    private final SSIElasticsearchRepository ssiElasticsearchRepository;
 
     @Autowired
-    public StartupServiceImpl(StartupServiceRepository startupRepository,
-                              StartupElasticsearchRepository startupElasticsearchRepository,
-                              RestTemplate restTemplate) {
+    public StartupServiceImpl(
+            StartupServiceRepository startupRepository,
+            StartupElasticsearchRepository startupElasticsearchRepository,
+            SSIElasticsearchRepository ssiElasticsearchRepository) {
         this.startupRepository = startupRepository;
         this.startupElasticsearchRepository = startupElasticsearchRepository;
-        this.restTemplate = restTemplate;
-
+        this.ssiElasticsearchRepository = ssiElasticsearchRepository;
     }
 
     @Override
     public List<StartupServiceRequest> getTop6StartupsByProgress() {
-        List<Startup> startups = startupRepository.findTop6ByOrderByProgressDesc();
-        return startups.stream()
-                .map(this::convertJpaToServiceRequest)
+        return startupRepository.findTop6ByOrderByFundingProgressDesc().stream()
+                .map(this::convertJpaToDto)
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<StartupElasticsearch> findAllStartupsInElasticsearch() {
+        List<StartupElasticsearch> startups = StreamSupport
+                .stream(startupElasticsearchRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+
+        // Calculate funding progress for each startup
+        startups.forEach(StartupElasticsearch::calculateAndSetFundingProgress);
+        return startups;
     }
 
     @Override
-    public List<StartupServiceRequest> searchStartupsByKeyword(String keyword) {
+    public List<StartupElasticsearch> searchStartupsByKeyword(String keyword) {
+        List<StartupElasticsearch> startups = startupElasticsearchRepository
+                .findByNameContainingOrDescriptionContaining(keyword, keyword);
 
-        restTemplate.postForEntity("http://localhost:9200/startups/_refresh", null, String.class);
-
-
-        return startupElasticsearchRepository
-                .findByNameContainingOrDescriptionContaining(keyword, keyword)
-                .stream()
-                .map(this::convertElasticsearchToServiceRequest)
-                .collect(Collectors.toList());
+        // Calculate funding progress for each startup
+        startups.forEach(StartupElasticsearch::calculateAndSetFundingProgress);
+        return startups;
     }
 
     @Override
-    public List<StartupServiceRequest> findAllStartupsInElasticsearch() {
-        return StreamSupport.stream(startupElasticsearchRepository.findAll().spliterator(), false)
-                .map(this::convertElasticsearchToServiceRequest)
+    public StartupServiceRequest getStartupDetailsFromPostgresql(Long startupId) {
+        return startupRepository.findById(startupId)
+                .map(this::convertJpaToDto)
+                .orElseThrow(() -> new RuntimeException("Startup not found"));
+    }
+
+    @Override
+    public StartupServiceRequest getStartupDetailsFromElasticsearch(Long startupId) {
+        StartupElasticsearch elasticsearchStartup = startupElasticsearchRepository.findById(startupId)
+                .orElseThrow(() -> new RuntimeException("Startup not found"));
+
+        List<SSIServiceRequest> ssiList = ssiElasticsearchRepository.findByStartupId(startupId).stream()
+                .map(this::convertElasticsearchSsiToDto)
                 .collect(Collectors.toList());
+
+        // Calculate funding progress
+        elasticsearchStartup.calculateAndSetFundingProgress();
+
+        return convertElasticsearchToServiceRequest(elasticsearchStartup, ssiList);
     }
 
-    // JPA 엔티티용 변환 메서드
-    private StartupServiceRequest convertJpaToServiceRequest(Startup startup) {
+    private StartupServiceRequest convertJpaToDto(Startup startup) {
         return StartupServiceRequest.builder()
+                .startupId(startup.getStartupId())
                 .name(startup.getName())
+                .description(startup.getStartupDetails().getDescription())
                 .category(startup.getCategory())
-                .contractStartDate(startup.getContractStartDate())
-                .contractTargetDeadline(startup.getContractTargetDeadline())
-                .progress((startup.getProgress() != null) ? startup.getProgress() : "0%")
-                .currentCoin(startup.getCurrentCoin() != null ? startup.getCurrentCoin() : 0)
-                .goalCoin(startup.getGoalCoin() != null ? startup.getGoalCoin() : 0)
-                .fundingProgress(calculateFundingProgress(startup.getCurrentCoin(), startup.getGoalCoin()))
+                .investmentStartDate(startup.getInvestmentStartDate())
+                .investmentTargetDeadline(startup.getInvestmentTargetDeadline())
+                .progress(startup.getProgress() != null ? startup.getProgress().toString() : "0")  // Integer -> String 변환
+                .currentCoin(startup.getCurrentCoin())
+                .goalCoin(startup.getGoalCoin())
+                .fundingProgress(startup.getFundingProgress() != null ?
+                        startup.getFundingProgress() :
+                        calculateFundingProgress(startup.getCurrentCoin(), startup.getGoalCoin()))
+                .ssiList(startup.getSsi().stream()
+                        .map(this::convertSsiToDto)
+                        .collect(Collectors.toList()))
+                .investmentRound(startup.getStartupDetails().getInvestmentRound())
+                .investmentStatus(startup.getStartupDetails().getInvestmentStatus())
+                .ceoName(startup.getStartupDetails().getCeoName())
+                .address(startup.getStartupDetails().getAddress())
+                .page(startup.getStartupDetails().getPage())
+                .establishmentDate(startup.getStartupDetails().getEstablishmentDate())
                 .build();
     }
 
-    // Elasticsearch 엔티티용 변환 메서드
-    private StartupServiceRequest convertElasticsearchToServiceRequest(ElasticsearchStartupEntity startup) {
+    private StartupServiceRequest convertElasticsearchToServiceRequest(StartupElasticsearch startup, List<SSIServiceRequest> ssiList) {
         return StartupServiceRequest.builder()
+                .startupId(startup.getStartupId())
                 .name(startup.getName())
+                .description(startup.getDescription())
                 .category(startup.getCategory())
-                .contractStartDate(startup.getContractStartDate())
-                .contractTargetDeadline(startup.getContractTargetDeadline())
-                .progress((startup.getProgress() != null) ? startup.getProgress() : "0%")
-                .currentCoin(startup.getCurrentCoin() != null ? startup.getCurrentCoin() : 0)
-                .goalCoin(startup.getGoalCoin() != null ? startup.getGoalCoin() : 0)
-                .fundingProgress(calculateFundingProgress(startup.getCurrentCoin(), startup.getGoalCoin()))
+                .investmentStartDate(startup.getInvestmentStartDate())
+                .investmentTargetDeadline(startup.getInvestmentTargetDeadline())
+                .progress(startup.getProgress())
+                .currentCoin(startup.getCurrentCoin())
+                .goalCoin(startup.getGoalCoin())
+                .fundingProgress(startup.getFundingProgress())
+                .ssiList(ssiList)
+                .ceoName(startup.getCeoName())
+                .address(startup.getAddress())
+                .page(startup.getPage())
+                .establishmentDate(startup.getEstablishmentDate())
                 .build();
     }
 
-    // FundingProgress 계산 메서드
-    private int calculateFundingProgress(Integer currentCoin, Integer goalCoin) {
-        return (goalCoin != null && goalCoin > 0)
-                ? (int) ((currentCoin != null ? (double) currentCoin : 0) / goalCoin * 100)
-                : 0;
+    private SSIServiceRequest convertElasticsearchSsiToDto(SSIElasticsearch ssiElasticsearch) {
+        return SSIServiceRequest.builder()
+                .ssiId(ssiElasticsearch.getSsiId())
+                .peopleGrade(ssiElasticsearch.getPeopleGrade())
+                .productGrade(ssiElasticsearch.getProductGrade())
+                .performanceGrade(ssiElasticsearch.getPerformanceGrade())
+                .potentialGrade(ssiElasticsearch.getPotentialGrade())
+                .evalDate(ssiElasticsearch.getEvalDate())
+                .evalDescription(ssiElasticsearch.getEvalDescription())
+                .build();
+    }
+
+    private SSIServiceRequest convertSsiToDto(SSI ssi) {
+        return SSIServiceRequest.builder()
+                .ssiId(ssi.getSsiId())
+                .peopleGrade(ssi.getPeopleGrade())
+                .productGrade(ssi.getProductGrade())
+                .performanceGrade(ssi.getPerformanceGrade())
+                .potentialGrade(ssi.getPotentialGrade())
+                .evalDate(ssi.getEvalDate())
+                .evalDescription(ssi.getEvalDescription())
+                .build();
+    }
+
+    private int calculateFundingProgress(Double currentCoin, Integer goalCoin) {
+        if (currentCoin == null || goalCoin == null || goalCoin == 0) {
+            return 0;
+        }
+        return (int) ((double) currentCoin / goalCoin * 100);
     }
 }

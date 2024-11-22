@@ -56,9 +56,25 @@ services:
     networks:
       - default  # 네트워크 추가
 
+
+    # MongoDB 서비스 추가
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+    networks:
+      - default
+
+
+
 volumes:
   postgres_data:
   es_data:
+  mongodb_data:
 
 networks:
   default:
