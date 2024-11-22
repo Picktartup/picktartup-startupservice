@@ -55,8 +55,6 @@ public class Startup {
     @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SSI> ssi;
 
-    @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL)
-    private Set<Contract> contracts;
 
 
     @PrePersist
