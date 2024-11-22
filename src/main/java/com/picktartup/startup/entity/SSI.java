@@ -43,8 +43,6 @@ public class SSI {
     @Column(name = "startup_id", nullable = false)
     private Long startupId;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startup_id", insertable = false, updatable = false)
