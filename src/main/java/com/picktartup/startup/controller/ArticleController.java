@@ -3,20 +3,13 @@ package com.picktartup.startup.controller;
 import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.entity.Article;
 
-import com.picktartup.startup.repository.mongoDB.ArticleRepository;
 import com.picktartup.startup.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/articles")

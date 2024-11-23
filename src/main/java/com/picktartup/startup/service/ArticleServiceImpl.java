@@ -3,8 +3,8 @@ package com.picktartup.startup.service;
 import com.picktartup.startup.dto.StartupCrawling;
 import com.picktartup.startup.entity.Article;
 import com.picktartup.startup.entity.Startup;
+import com.picktartup.startup.repository.dynamodb.ArticleDynamoDBRepository;
 import com.picktartup.startup.repository.jpa.StartupServiceRepository;
-import com.picktartup.startup.repository.mongoDB.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -16,13 +16,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleDynamoDBRepository articleRepository;
     private final StartupServiceRepository startupRepository;
 
     @Override
@@ -37,11 +38,14 @@ public class ArticleServiceImpl implements ArticleService {
         Startup startup = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found: " + startupId));
 
+        log.info("Found startup with name: {}", startup.getName());  // 여기서 실제 이름 확인
+
         StartupCrawling startupDTO = StartupCrawling.from(startup);
         List<Article> newArticles = new ArrayList<>();
 
         try {
             String url = "https://thevc.kr/" + startupDTO.getEnglishName();
+            log.info("Attempting to crawl from URL: {}", url);
             log.info("Scraping URL: {} for startup: {}", url, startupDTO.getKoreanName());
 
             Document doc = Jsoup.connect(url)
@@ -49,8 +53,6 @@ public class ArticleServiceImpl implements ArticleService {
                     .timeout(5000)
                     .get();
 
-            // 뉴스 항목을 선택하는 Selector 수정
-//            Elements newsItems = doc.select("div.news_board a");
             Elements newsItems = doc.select("a.block-wrap.clickable.rounded-border");
 
 
@@ -77,11 +79,15 @@ public class ArticleServiceImpl implements ArticleService {
                     String imageUrl = findImageUrl(articleDoc);
 
                     Article article = new Article();
+                    article.setId(UUID.randomUUID().toString());  // 고유 ID 생성
                     article.setUrl(articleUrl);
                     article.setTitle(title);
                     article.setImageUrl(imageUrl);
                     article.setKeyword(startupDTO.getKoreanName());
-                    article.setCreatedAt(new Date());
+                    article.setCreatedAt(new Date().toInstant().toString());
+
+
+                    log.info("Saving article - ID: {}, Title: {}, URL: {}", article.getId(), article.getTitle(), article.getUrl());
 
                     Article savedArticle = articleRepository.save(article);
                     newArticles.add(savedArticle);
