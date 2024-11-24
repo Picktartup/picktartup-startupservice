@@ -28,3 +28,6 @@ spring:
         enabled: true    # Readiness 상태를 활성화
   elasticsearch:
     uris: http://elasticsearch:9200
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb.startupservice.svc.cluster.local:27017/news_database?authSource=admin
