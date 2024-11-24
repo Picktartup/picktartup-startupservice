@@ -19,3 +19,7 @@ spring:
   logging:
     level:
       org.flywaydb: DEBUG
+  data:
+    elasticsearch:
+      rest:
+        uris: http://localhost:9200

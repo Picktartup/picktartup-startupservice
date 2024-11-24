@@ -26,3 +26,7 @@ spring:
         enabled: true    # Liveness 상태를 활성화
       readinessstate:
         enabled: true    # Readiness 상태를 활성화
+  data:
+    elasticsearch:
+      rest:
+        uris: http://elasticsearch:9200
