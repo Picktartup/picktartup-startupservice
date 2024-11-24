@@ -7,9 +7,5 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/news_database  # MongoDB URI
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
-
 server:
   port: 8080
