@@ -4,8 +4,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     # MongoDB 설정 추가
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/news_database  # MongoDB URI
 server:
   port: 8080
