@@ -32,11 +32,13 @@ public class StartupServiceImpl implements StartupService {
 
     @Override
     public List<StartupServiceRequest> getTop6StartupsByProgress() {
-        return startupRepository.findTop6ByOrderByFundingProgressDesc().stream()
+        return startupRepository.findAll().stream()
+                .sorted((a, b) -> calculateFundingProgress(b.getCurrentCoin(), b.getGoalCoin())
+                        - calculateFundingProgress(a.getCurrentCoin(), a.getGoalCoin()))
+                .limit(6)
                 .map(this::convertJpaToDto)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<StartupElasticsearch> findAllStartupsInElasticsearch() {

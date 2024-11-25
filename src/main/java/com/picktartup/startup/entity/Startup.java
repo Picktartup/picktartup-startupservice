@@ -57,6 +57,7 @@ public class Startup {
 
 
 
+
     @PrePersist
     @PreUpdate
     public void calculateFundingProgress() {

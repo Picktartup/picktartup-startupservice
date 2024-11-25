@@ -4,6 +4,9 @@ import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.entity.Article;
 
 import com.picktartup.startup.repository.mongoDB.ArticleRepository;
+import com.picktartup.startup.service.ArticleService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,63 +21,25 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/articles")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
+@Slf4j
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
 
-    @Autowired
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
 
     @GetMapping("health_check")
-    public ResponseEntity<ApiResponse<String>> healthCheck() {
-        return ResponseEntity.ok(ApiResponse.ok("서비스가 정상 작동 중입니다."));
-    }
-    // URL 입력 후 MongoDB에 기사 저장
-    @PostMapping
-    public ResponseEntity<Map<String, Object>> saveArticle(
-            @RequestParam String url,
-            @RequestParam String keyword) {
-        try {
-            Document doc = Jsoup.connect(url).get();
-            String title = doc.title();
-            String imageUrl = doc.select("meta[property=og:image]").attr("content");
-
-            Article article = new Article();
-            article.setUrl(url);
-            article.setTitle(title != null ? title : "제목 없음");
-            article.setImageUrl(imageUrl != null ? imageUrl : "default.jpg");
-            article.setKeyword(keyword);
-            article.setCreatedAt(new Date());
-
-            Article savedArticle = articleRepository.save(article);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", 200);
-            response.put("message", "기사 저장 성공");
-            response.put("data", savedArticle);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", 500);
-            response.put("message", "기사 저장 실패");
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(500).body(response);
-        }
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("서비스가 정상 작동 중입니다.");
     }
 
-    // 키워드로 기사 조회
-    @GetMapping("/{keyword}")
-    public ResponseEntity<Map<String, Object>> getArticlesByKeyword(@PathVariable String keyword) {
-        List<Article> articles = articleRepository.findByKeyword(keyword);
+    @GetMapping("/startup/{startupId}")
+    public ResponseEntity<List<Article>> getArticlesByStartupId(@PathVariable Long startupId) {
+        return ResponseEntity.ok(articleService.getNewsByStartupId(startupId));
+    }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", 200);
-        response.put("message", "기사 조회 성공");
-        response.put("data", articles);
-
-        return ResponseEntity.ok(response);
+    @PostMapping("/scrape/{startupId}")
+    public ResponseEntity<List<Article>> scrapeArticles(@PathVariable Long startupId) {
+        return ResponseEntity.ok(articleService.scrapeAndSaveNews(startupId));
     }
 }

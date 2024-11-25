@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface StartupServiceRepository extends JpaRepository<Startup, Long> {
 
-    @EntityGraph(attributePaths = {"wallet", "startupDetails", "ssi"})
+    @EntityGraph(attributePaths = {"startupDetails", "ssi"})
     @Query("SELECT s FROM Startup s ORDER BY s.fundingProgress DESC")
     List<Startup> findTop6ByOrderByFundingProgressDesc();
 
