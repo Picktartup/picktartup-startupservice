@@ -19,9 +19,8 @@ public class ArticleCrawlingScheduler {
     private final ArticleService articleService;
     private final StartupServiceRepository startupRepository;
 
-    // 테스트할 때는 30초로 설정
-    //@Scheduled(fixedRate = 30000)  // 30초마다
-    @Scheduled(cron = "0 0 3 * * ?")  // 실제 운영할 때는 이걸로 변경 (매일 새벽 3시)
+    @Scheduled(fixedRate = 60000)  // 60초 테스트용
+    //@Scheduled(cron = "0 0 3 * * ?")  // 실제 운영 (매일 새벽 3시)
     public void scheduledCrawling() {
         log.info("Starting article crawling...");
 
@@ -38,7 +37,6 @@ public class ArticleCrawlingScheduler {
 
                 } catch (Exception e) {
                     log.error("Error crawling for startup: " + startup.getName(), e);
-                    // 한 스타트업이 실패해도 다음으로 진행
                     continue;
                 }
             }

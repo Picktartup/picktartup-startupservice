@@ -49,8 +49,6 @@ public class ArticleServiceImpl implements ArticleService {
                     .timeout(5000)
                     .get();
 
-            // 뉴스 항목을 선택하는 Selector 수정
-//            Elements newsItems = doc.select("div.news_board a");
             Elements newsItems = doc.select("a.block-wrap.clickable.rounded-border");
 
 
