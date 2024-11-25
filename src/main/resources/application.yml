@@ -3,26 +3,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
+    # MongoDB 설정 추가
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/news_database  # MongoDB URI
   elasticsearch:
     rest:
       uris: http://localhost:9200
-
-
-  task:
-    scheduling:
-      pool:
-        size: 2
-      thread-name-prefix: scheduled-task-
-
-
-  profiles:
-    include: secret
-
-aws:
-  access-key: ${AWS_ACCESS_KEY}
-  secret-key: ${AWS_SECRET_KEY}
-  region: ${AWS_REGION}
 
 server:
   port: 8080
