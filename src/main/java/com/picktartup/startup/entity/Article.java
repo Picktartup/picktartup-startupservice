@@ -3,6 +3,7 @@ package com.picktartup.startup.entity;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.Data;
 import lombok.Getter;
@@ -28,6 +29,6 @@ public class Article {
     @DynamoDBIndexHashKey(globalSecondaryIndexName = "keyword-index", attributeName = "keyword")
     private String keyword;
 
-    @DynamoDBAttribute(attributeName = "createdAt")
+    @DynamoDBRangeKey(attributeName = "createdAt")
     private String createdAt;  // ISO 8601 형식
 }

@@ -29,10 +29,11 @@ public class ArticleDynamoDBRepository {
         eav.put(":val1", new AttributeValue().withS(keyword));
 
         DynamoDBQueryExpression<Article> queryExpression = new DynamoDBQueryExpression<Article>()
-                .withIndexName("keyword-index")  // 새로 생성된 GSI 이름
+                .withIndexName("keyword-index")
                 .withKeyConditionExpression("keyword = :val1")
                 .withExpressionAttributeValues(eav)
-                .withScanIndexForward(false);  // 내림차순 정렬
+                .withScanIndexForward(false)
+                .withConsistentRead(false);  // GSI에서는 반드시 false로 설정해야 함
 
         return dynamoDBMapper.query(Article.class, queryExpression);
     }
@@ -41,14 +42,14 @@ public class ArticleDynamoDBRepository {
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(url));
 
-        // 예약 키워드(url)를 Attribute Name Mapping으로 대체
         Map<String, String> expressionAttributeNames = new HashMap<>();
         expressionAttributeNames.put("#url", "url");
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("#url = :val1") // 예약 키워드 대신 매핑된 이름 사용
-                .withExpressionAttributeNames(expressionAttributeNames) // 매핑 추가
-                .withExpressionAttributeValues(eav);
+                .withFilterExpression("#url = :val1")
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(eav)
+                .withConsistentRead(false);  // 여기도 false로 설정
 
         List<Article> result = dynamoDBMapper.scan(Article.class, scanExpression);
         return !result.isEmpty();

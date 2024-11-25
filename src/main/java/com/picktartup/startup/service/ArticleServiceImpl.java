@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
         Startup startup = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found: " + startupId));
 
-        log.info("Found startup with name: {}", startup.getName());  // 여기서 실제 이름 확인
+        log.info("Found startup with name: {}", startup.getName());  //실제 이름 확인 로그
 
         StartupCrawling startupDTO = StartupCrawling.from(startup);
         List<Article> newArticles = new ArrayList<>();
@@ -79,7 +79,7 @@ public class ArticleServiceImpl implements ArticleService {
                     String imageUrl = findImageUrl(articleDoc);
 
                     Article article = new Article();
-                    article.setId(UUID.randomUUID().toString());  // 고유 ID 생성
+                    article.setId(UUID.randomUUID().toString());
                     article.setUrl(articleUrl);
                     article.setTitle(title);
                     article.setImageUrl(imageUrl);
