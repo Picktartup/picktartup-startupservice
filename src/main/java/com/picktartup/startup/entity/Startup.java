@@ -45,6 +45,8 @@ public class Startup {
     @Column(name = "funding_progress")
     private Integer fundingProgress;
 
+    @Column(name = "logo_url")
+    private String logoUrl;
 
     @Column(name = "wallet_id" , nullable = false)
     private Long walletId;

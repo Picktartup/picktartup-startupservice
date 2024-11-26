@@ -1,6 +1,5 @@
 package com.picktartup.startup.repository.elasticsearch;
 
-import com.picktartup.startup.dto.SSIElasticsearch;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
