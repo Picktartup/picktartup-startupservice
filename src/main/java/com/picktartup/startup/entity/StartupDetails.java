@@ -63,4 +63,7 @@ public class StartupDetails {
 
     @Column(name = "roi")
     private Float roi;
+
+    @Column(name = "signature")
+    private String signature;
 }

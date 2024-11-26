@@ -1,4 +1,3 @@
-// src/main/java/com/picktartup/startup/dto/StartupElasticsearch.java
 package com.picktartup.startup.dto;
 
 import lombok.*;

@@ -30,4 +30,6 @@ public class StartupServiceRequest {
     private String ceoName;
     private String page;
     private String establishmentDate;
+
+    private String logoUrl;
 }

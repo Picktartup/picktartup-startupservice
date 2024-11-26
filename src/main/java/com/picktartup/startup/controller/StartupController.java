@@ -3,6 +3,7 @@ package com.picktartup.startup.controller;
 import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
+import com.picktartup.startup.entity.Startup;
 import com.picktartup.startup.service.StartupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -81,5 +82,12 @@ public class StartupController {
         response.put("data", startupDetails);
 
         return ResponseEntity.ok(response);
+    }
+
+    // S3에서 스타트업 로고 가져오기
+    @GetMapping("/logo-urls")
+    public ResponseEntity<List<StartupServiceRequest>> getAllStartupLogos() {
+        List<StartupServiceRequest> startups = startupService.getAllStartupsWithLogoUrl();
+        return ResponseEntity.ok(startups);
     }
 }

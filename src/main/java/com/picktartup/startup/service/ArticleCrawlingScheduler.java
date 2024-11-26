@@ -2,7 +2,6 @@ package com.picktartup.startup.service;
 
 import com.picktartup.startup.entity.Article;
 import com.picktartup.startup.entity.Startup;
-import com.picktartup.startup.service.ArticleService;
 import com.picktartup.startup.repository.jpa.StartupServiceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +18,8 @@ public class ArticleCrawlingScheduler {
     private final ArticleService articleService;
     private final StartupServiceRepository startupRepository;
 
-    @Scheduled(fixedRate = 60000)  // 60초 테스트용
-    //@Scheduled(cron = "0 0 3 * * ?")  // 실제 운영 (매일 새벽 3시)
+    //@Scheduled(fixedRate = 60000)  // 60초 테스트용
+    @Scheduled(cron = "0 0 3 * * ?")  // 실제 운영 (매일 새벽 3시)
     public void scheduledCrawling() {
         log.info("Starting article crawling...");
 
