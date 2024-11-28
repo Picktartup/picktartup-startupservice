@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +39,6 @@ public class StartupDetails {
     @Column(name = "investment_status", nullable = false, length = 10)
     private String investmentStatus;
 
-    @Column(name = "investment_round", nullable = false, length = 20)
-    private String investmentRound;
 
     @Column(name = "address", nullable = false, length = 100)
     private String address;
@@ -59,11 +59,16 @@ public class StartupDetails {
     private String establishmentDate;
 
     @Column(name = "expected_roi")
-    private Float expectedRoi;
+    private Double expectedRoi;
 
     @Column(name = "roi")
-    private Float roi;
+    private Double roi;
 
     @Column(name = "signature")
     private String signature;
+
+    @Column(name = "current_round")
+    private String currentRound;
+
+
 }

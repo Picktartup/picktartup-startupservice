@@ -48,8 +48,16 @@ public class Startup {
     @Column(name = "logo_url")
     private String logoUrl;
 
-    @Column(name = "wallet_id" , nullable = false)
-    private Long walletId;
+    // entity 추가
+    @Column(name = "industry_type",nullable = false)
+    private String industryType;
+
+    @Column(name = "ceo_user_id" , nullable = false)
+    private Long ceoUserId;
+
+    @Column(name = "campaign_id")
+    private Integer campaignId;
+
 
     @OneToOne(mappedBy = "startup" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StartupDetails startupDetails;

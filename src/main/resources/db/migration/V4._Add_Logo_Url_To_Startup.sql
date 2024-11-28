@@ -1,2 +1,0 @@
-ALTER TABLE startup
-    ADD COLUMN IF NOT EXISTS logo_url VARCHAR(255);

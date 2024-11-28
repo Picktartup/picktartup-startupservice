@@ -1,9 +1,12 @@
 package com.picktartup.startup.controller;
 
 import com.picktartup.startup.common.dto.ApiResponse;
+import com.picktartup.startup.dto.AnnualMetricsResponse;
+import com.picktartup.startup.dto.MetricsChartResponse;
+import com.picktartup.startup.dto.MonthlyMetricsResponse;
 import com.picktartup.startup.dto.StartupElasticsearch;
+import com.picktartup.startup.dto.StartupResponse;
 import com.picktartup.startup.dto.StartupServiceRequest;
-import com.picktartup.startup.entity.Startup;
 import com.picktartup.startup.service.StartupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -90,4 +93,24 @@ public class StartupController {
         List<StartupServiceRequest> startups = startupService.getAllStartupsWithLogoUrl();
         return ResponseEntity.ok(startups);
     }
+
+
+    @GetMapping("/{startupId}/metrics/annual")
+    public ResponseEntity<List<AnnualMetricsResponse>> getAnnualMetrics(@PathVariable Long startupId) {
+        return ResponseEntity.ok(startupService.getAnnualMetrics(startupId));
+    }
+
+    @GetMapping("/{startupId}/metrics/monthly")
+    public ResponseEntity<List<MonthlyMetricsResponse>> getMonthlyMetrics(@PathVariable Long startupId) {
+        return ResponseEntity.ok(startupService.getMonthlyMetrics(startupId));
+    }
+
+    @GetMapping("/{startupId}/metrics/chart")
+    public ResponseEntity<List<MetricsChartResponse>> getMetricsForChart(
+            @PathVariable Long startupId,
+            @RequestParam(defaultValue = "monthly") String period
+    ) {
+        return ResponseEntity.ok(startupService.getMetricsForChart(startupId, period));
+    }
+    
 }

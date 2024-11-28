@@ -1,6 +1,10 @@
 package com.picktartup.startup.service;
 
+import com.picktartup.startup.dto.AnnualMetricsResponse;
+import com.picktartup.startup.dto.MetricsChartResponse;
+import com.picktartup.startup.dto.MonthlyMetricsResponse;
 import com.picktartup.startup.dto.StartupElasticsearch;
+import com.picktartup.startup.dto.StartupResponse;
 import com.picktartup.startup.dto.StartupServiceRequest;
 
 import java.util.List;
@@ -13,7 +17,9 @@ public interface StartupService {
     StartupServiceRequest getStartupDetailsFromPostgresql(Long startupId);
     StartupServiceRequest getStartupDetailsFromElasticsearch(Long startupId);
 
-    //String uploadLogo(Long startupId, MultipartFile file);
-    //void deleteLogo(Long startupId);
     List<StartupServiceRequest> getAllStartupsWithLogoUrl();
+    List<AnnualMetricsResponse> getAnnualMetrics(Long startupId);
+    List<MonthlyMetricsResponse> getMonthlyMetrics(Long startupId);
+    List<MetricsChartResponse> getMetricsForChart(Long startupId, String period);
+
 }

@@ -1,26 +1,22 @@
 package com.picktartup.startup.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.picktartup.startup.dto.*;
 import com.picktartup.startup.entity.SSI;
 import com.picktartup.startup.entity.Startup;
+import com.picktartup.startup.entity.StartupAnnualMetrics;
+import com.picktartup.startup.entity.StartupMonthlyMetrics;
 import com.picktartup.startup.repository.elasticsearch.SSIElasticsearchRepository;
 import com.picktartup.startup.repository.elasticsearch.StartupElasticsearchRepository;
+import com.picktartup.startup.repository.jpa.StartupMetricsRepository;
 import com.picktartup.startup.repository.jpa.StartupServiceRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +31,8 @@ public class StartupServiceImpl implements StartupService {
     private final String s3Bucket;
     private final String awsRegion;
 
+    private final StartupMetricsRepository metricsRepository;
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -46,13 +44,15 @@ public class StartupServiceImpl implements StartupService {
             SSIElasticsearchRepository ssiElasticsearchRepository,
             AmazonS3 amazonS3,
             @Value("${cloud.aws.s3.bucket}") String s3Bucket,
-            @Value("${cloud.aws.region.static}") String awsRegion) {
+            @Value("${cloud.aws.region.static}") String awsRegion,
+            StartupMetricsRepository metricsRepository) {
         this.startupRepository = startupRepository;
         this.startupElasticsearchRepository = startupElasticsearchRepository;
         this.ssiElasticsearchRepository = ssiElasticsearchRepository;
         this.amazonS3 = amazonS3; // AmazonS3 주입
         this.s3Bucket = s3Bucket;
         this.awsRegion = awsRegion;
+        this.metricsRepository = metricsRepository;
     }
 
     @Override
@@ -125,12 +125,20 @@ public class StartupServiceImpl implements StartupService {
                 .ssiList(startup.getSsi().stream()
                         .map(this::convertSsiToDto)
                         .collect(Collectors.toList()))
-                .investmentRound(startup.getStartupDetails().getInvestmentRound())
                 .investmentStatus(startup.getStartupDetails().getInvestmentStatus())
                 .ceoName(startup.getStartupDetails().getCeoName())
                 .address(startup.getStartupDetails().getAddress())
                 .page(startup.getStartupDetails().getPage())
                 .establishmentDate(startup.getStartupDetails().getEstablishmentDate())
+                .current_round(startup.getStartupDetails().getCurrentRound())
+                .registration_num(startup.getStartupDetails().getRegistrationNum())
+                .contract_period(startup.getStartupDetails().getContractPeriod())
+                .signature(startup.getStartupDetails().getSignature())
+                .ceo_user_id(startup.getCeoUserId())
+                .industry_type(startup.getIndustryType())
+                .campaign_id(startup.getCampaignId())
+                .expected_roi(startup.getStartupDetails().getExpectedRoi())
+                .roi(startup.getStartupDetails().getRoi())
                 .build();
     }
 
@@ -151,6 +159,7 @@ public class StartupServiceImpl implements StartupService {
                 .address(startup.getAddress())
                 .page(startup.getPage())
                 .establishmentDate(startup.getEstablishmentDate())
+                .current_round(startup.getInvestmentRound())
                 .build();
     }
 
@@ -186,51 +195,6 @@ public class StartupServiceImpl implements StartupService {
     }
 
 
-//    public String uploadLogo(Long startupId, MultipartFile file) {
-//        try {
-//            Startup startup = startupRepository.findById(startupId)
-//                    .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
-//
-//            String fileName = startup.getName().toLowerCase() + UUID.randomUUID() + ".png";
-//            String fileUrl = "startup-logos/" + fileName;
-//
-//            ObjectMetadata metadata = new ObjectMetadata();
-//            metadata.setContentType(file.getContentType());
-//            metadata.setContentLength(file.getSize());
-//
-//            // S3에 업로드
-//            amazonS3Client.putObject(
-//                    new PutObjectRequest(bucket, fileUrl, file.getInputStream(), metadata)
-//                            .withCannedAcl(CannedAccessControlList.PublicRead)
-//            );
-//
-//            // URL 저장
-//            String logoUrl = amazonS3Client.getUrl(bucket, fileUrl).toString();
-//            startup.setLogoUrl(logoUrl);
-//            startupRepository.save(startup);
-//
-//            return logoUrl;
-//        } catch (IOException e) {
-//            log.error("로고 업로드 실패: {}", e.getMessage());
-//            throw new RuntimeException("로고 업로드에 실패했습니다.");
-//        }
-//    }
-//
-//    // 로고 삭제 메서드 추가
-//    public void deleteLogo(Long startupId) {
-//        Startup startup = startupRepository.findById(startupId)
-//                .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
-//
-//        if (startup.getLogoUrl() != null) {
-//            String fileUrl = startup.getLogoUrl();
-//            String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-//            amazonS3Client.deleteObject(bucket, "startup-logos/" + fileName);
-//
-//            startup.setLogoUrl(null);
-//            startupRepository.save(startup);
-//        }
-//    }
-
     public List<StartupServiceRequest> getAllStartupsWithLogoUrl() {
         return startupRepository.findAll().stream()
                 .map(startup -> StartupServiceRequest.builder()
@@ -243,4 +207,75 @@ public class StartupServiceImpl implements StartupService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<AnnualMetricsResponse> getAnnualMetrics(Long startupId) {
+        List<StartupAnnualMetrics> metrics = metricsRepository.findByStartup_StartupIdOrderByYear(startupId);
+
+        return metrics.stream()
+                .map(metric -> {
+                    AnnualMetricsResponse response = new AnnualMetricsResponse();
+                    response.setAnnualId(metric.getAnnualId());
+                    response.setYear(metric.getYear());
+                    response.setAnnualRevenue(metric.getAnnualRevenue());
+                    response.setOperatingProfit(metric.getOperatingProfit());
+                    response.setTotalAsset(metric.getTotalAsset());
+                    response.setNetProfit(metric.getNetProfit());
+                    response.setCreatedAt(metric.getCreatedAt());
+                    response.setDataSource(metric.getDataSource());
+                    response.setStartupId(metric.getStartup().getStartupId());
+                    response.setInvestmentRound(metric.getInvestmentRound());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MonthlyMetricsResponse> getMonthlyMetrics(Long startupId) {
+        List<StartupMonthlyMetrics> metrics = metricsRepository.findMonthlyByStartupIdOrderByMetricDate(startupId);
+
+        return metrics.stream()
+                .map(metric -> {
+                    MonthlyMetricsResponse response = new MonthlyMetricsResponse();
+                    response.setMonthlyId(metric.getMonthlyId());
+                    response.setMetricDate(metric.getMetricDate());
+                    response.setMau(metric.getMau());
+                    response.setEmployeeCount(metric.getEmployeeCount());
+                    response.setCreatedAt(metric.getCreatedAt());
+                    response.setDataSource(metric.getDataSource());
+                    response.setStartupId(metric.getStartup().getStartupId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MetricsChartResponse> getMetricsForChart(Long startupId, String period) {
+        if ("annual".equals(period)) {
+            List<StartupAnnualMetrics> metrics = metricsRepository.findByStartup_StartupIdOrderByYear(startupId);
+            return metrics.stream()
+                    .map(metric -> {
+                        MetricsChartResponse response = new MetricsChartResponse();
+                        response.setDate(String.valueOf(metric.getYear()));
+                        response.setRevenue(metric.getAnnualRevenue());
+                        response.setOperatingProfit(metric.getOperatingProfit());
+                        response.setNetProfit(metric.getNetProfit());
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            List<StartupMonthlyMetrics> metrics = metricsRepository.findMonthlyByStartupIdOrderByMetricDate(startupId);
+            return metrics.stream()
+                    .map(metric -> {
+                        MetricsChartResponse response = new MetricsChartResponse();
+                        response.setDate(metric.getMetricDate().format(DateTimeFormatter.ofPattern("yyyy-MM")));
+                        response.setMau(metric.getMau());
+                        response.setEmployeeCount(metric.getEmployeeCount());
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
+
 }

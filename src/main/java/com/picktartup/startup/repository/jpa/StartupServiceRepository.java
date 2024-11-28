@@ -15,4 +15,5 @@ public interface StartupServiceRepository extends JpaRepository<Startup, Long> {
     @Query("SELECT s FROM Startup s ORDER BY s.fundingProgress DESC")
     List<Startup> findTop6ByOrderByFundingProgressDesc();
 
+
 }
