@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS startup CASCADE;
+DROP TABLE IF EXISTS startupdetails CASCADE;
+DROP TABLE IF EXISTS ssi CASCADE;
+
+
 CREATE TABLE startup (
                          startup_id BIGINT NOT NULL PRIMARY KEY,
                          name VARCHAR(20) NOT NULL,

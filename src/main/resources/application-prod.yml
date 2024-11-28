@@ -31,3 +31,15 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb.startupservice.svc.cluster.local:27017/news_database?authSource=admin
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${AWS_S3_BUCKET}
+    region:
+      static: ${AWS_REGION}
+    stack:
+      auto: false
