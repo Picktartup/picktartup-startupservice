@@ -1,38 +1,194 @@
-INSERT INTO startup (startup_id, name, category, progress, investment_start_date, investment_target_deadline, goal_coin, current_coin, funding_progress, wallet_id)
-VALUES
-    (1, '두잇', '푸드/농업', 25, '2024-11-01 23:59:59', '2024-11-04 23:59:59', 1000, 200, NULL, 1),
-    (2, '리클', '커머스', 50, '2024-12-01 23:59:59', '2024-12-20 23:59:59', 1500, 300, NULL, 2),
-    (3, '바인드', '패션', 10, '2024-12-15 23:59:59', '2024-12-20 23:59:59', 1200, 400, NULL, 3),
-    (4, '뉴닉', '콘텐츠/예술', 70, '2024-12-20 23:59:59', '2024-12-31 23:59:59', 2000, 500, NULL, 4),
-    (5, '라프텔', '콘텐츠/예술', 90, '2024-12-31 23:59:59', '2025-01-15 23:59:59', 2500, 600, NULL, 5),
-    (6, '아정네트웍스', '통신보안/데이터', 35, '2025-01-31 23:59:59', '2025-02-10 23:59:59', 3000, 700, NULL, 6);
+INSERT INTO startup (startup_id,
+                     name,
+                     category,
+                     progress,
+                     investment_start_date,
+                     investment_target_deadline,
+                     goal_coin,
+                     current_coin,
+                     funding_progress,
+                     ceo_user_id,
+                     logo_url,
+                     industry_type,
+                     campaign_id)
+VALUES (1, '두잇', '푸드/농업', 25, '2024-11-01 23:59:59', '2024-11-04 23:59:59', 1000, 200, NULL, 33, NULL,'팀매칭 배달앱 ''두잇''을 운영하는 기업',1),
+       (2, '리클', '커머스', 50, '2024-12-01 23:59:59', '2024-12-20 23:59:59', 1500, 300, NULL, 34, NULL,'모바일 간편 의류 수거 및 프리미엄 리세일 서비스',2),
+       (3, '바인드', '패션', 10, '2024-12-15 23:59:59', '2024-12-20 23:59:59', 1200, 400, NULL, 35, NULL,'중년 남성 대상 패션 플랫폼 ‘애슬러’를 운영하는 기업',3),
+       (4, '뉴닉', '콘텐츠/예술', 70, '2024-12-20 23:59:59', '2024-12-31 23:59:59', 2000, 500, NULL, 36, NULL,'MZ세대 타겟 뉴스레터 서비스',4),
+       (5, '라프텔', '콘텐츠/예술', 90, '2024-12-31 23:59:59', '2025-01-15 23:59:59', 2500, 600, NULL, 37, NULL,'애니메이션 스트리밍 서비스',5),
+       (6, '아정네트웍스', '통신보안/데이터', 35, '2025-01-31 23:59:59', '2025-02-10 23:59:59', 3000, 38, NULL, 6, NULL,'네트워크, 통신 및 가전제품 렌탈 서비스',6);
 
-INSERT INTO startup_details (
-    startup_id,
-    description,
-    investment_status,
-    investment_round,
-    address,
-    ceo_name,
-    page,
-    establishment_date,
-    contract_period,
-    expected_roi,
-    roi,
-    registration_num)
-VALUES
-    (1, '두잇 스타트업 소개', '비상장', 'Seed', '서울 관악구 남부순환로 1925, 401호', '이윤석', 'https://doeat.io/', '2022-04-26', 12, 15.5, NULL, '123-45-67890'),
-    (2, '리클 스타트업 소개', '비상장', 'Series A', '경기 남양주시 오남읍 양지로 338-8, 2층', '양수빈', 'https://recl.co.kr/', '2021-11-12', 24, 20.0, NULL, '234-56-78901'),
-    (3, '바인드 스타트업 소개', '비상장', 'Seed', '울산 남구 대공원로99번길 20-1, 205호', '김시화', 'https://athler.kr/home', '2022-06-10', 6, 12.5, NULL, '345-67-89012'),
-    (4, '뉴닉 스타트업 소개', '비상장', 'Series A', '서울 마포구 어울마당로 35, 5층', '김소연', 'https://newneek.co/', '2018-07-09', 36, 25.0, NULL, '456-78-90123'),
-    (5, '라프텔 스타트업 소개', '비상장', 'Seed', '서울 영등포구 국제금융로 10, 13', '김범준', 'https://laftel.net/', '2021-12-10', 18, 18.5, NULL, '567-89-01234'),
-    (6, '아정네트웍스 스타트업 소개', '비상장', 'Series A', '부산 북구 만덕대로 117', '김민기', 'https://www.ajd.co.kr/', '2021-05-03', 24, 22.0, NULL, '678-90-12345');
+INSERT INTO startup_details (startup_id,
+                             description,
+                             investment_status,
+                             address,
+                             ceo_name,
+                             page,
+                             establishment_date,
+                             contract_period,
+                             expected_roi,
+                             roi,
+                             registration_num,
+                             signature,
+                             current_round)
+VALUES (1, '두잇 스타트업 소개', '비상장',  '서울 관악구 남부순환로 1925, 401호', '이윤석', 'https://doeat.io/', '2022-04-26', 12, 15.5,
+        NULL, '123-45-67890', NULL,'Series A'),
+       (2, '리클 스타트업 소개', '비상장', '경기 남양주시 오남읍 양지로 338-8, 2층', '양수빈', 'https://recl.co.kr/', '2021-11-12', 24,
+        20.0, NULL, '234-56-78901', NULL,'Pre-A'),
+       (3, '바인드 스타트업 소개', '비상장',  '울산 남구 대공원로99번길 20-1, 205호', '김시화', 'https://athler.kr/home', '2022-06-10', 6,
+        12.5, NULL, '345-67-89012', NULL,'Series A'),
+       (4, '뉴닉 스타트업 소개', '비상장', '서울 마포구 어울마당로 35, 5층', '김소연', 'https://newneek.co/', '2018-07-09', 36, 25.0,
+        NULL, '456-78-90123', NULL,'Series A'),
+       (5, '라프텔 스타트업 소개', '비상장','서울 영등포구 국제금융로 10, 13', '김범준', 'https://laftel.net/', '2021-12-10', 18, 18.5,
+        NULL, '567-89-01234', NULL,'Series B'),
+       (6, '아정네트웍스 스타트업 소개', '비상장',  '부산 북구 만덕대로 117', '김민기', 'https://www.ajd.co.kr/', '2021-05-03', 24,
+        22.0, NULL, '678-90-12345', NULL,'Series C');
 
-INSERT INTO ssi (ssi_id, eval_date, eval_description, people_grade, performance_grade, potential_grade, product_grade, startup_id)
+INSERT INTO ssi (ssi_id,
+                 eval_date,
+                 eval_description,
+                 people_grade,
+                 performance_grade,
+                 potential_grade,
+                 product_grade,
+                 startup_id)
+VALUES (1, '2024-11-14 10:00:00', '두잇 스타트업의 상세 평가', '양호', '우수', '보통', '보통', 1),
+       (2, '2024-11-15 10:00:00', '리클 스타트업의 상세 평가', '보통', '우수', '우수', '양호', 2 ),
+       (3, '2024-11-16 10:00:00', '바인드 스타트업의 상세 평가', '보통', '보통', '양호', '우수', 3),
+       (4, '2024-11-17 10:00:00', '뉴닉 스타트업의 상세 평가', '우수', '우수', '양호', '보통', 4),
+       (5, '2024-11-18 10:00:00', '라프텔 스타트업의 상세 평가', '우수', '우수', '우수', '우수', 5),
+       (6, '2024-11-19 10:00:00', '아정네트웍스 스타트업의 상세 평가', '보통', '양호', '보통', '보통', 6);
+
+INSERT INTO startup_monthlymetrics (monthly_id,
+                                    startup_id,
+                                    metric_date,
+                                    monthly_revenue,
+                                    monthly_operating_profit,
+                                    monthly_net_profit,
+                                    mau, employee_count,
+                                    created_at,
+                                    data_source)
 VALUES
-    (1, '2024-11-14 10:00:00', '두잇 스타트업의 상세 평가', '양호', '우수', '보통', '보통', 1),
-    (2, '2024-11-15 10:00:00', '리클 스타트업의 상세 평가', '보통', '우수', '우수', '양호', 2),
-    (3, '2024-11-16 10:00:00', '바인드 스타트업의 상세 평가', '보통', '보통', '양호', '우수', 3),
-    (4, '2024-11-17 10:00:00', '뉴닉 스타트업의 상세 평가', '우수', '우수', '양호', '보통', 4),
-    (5, '2024-11-18 10:00:00', '라프텔 스타트업의 상세 평가', '우수', '우수', '우수', '우수', 5),
-    (6, '2024-11-19 10:00:00', '아정네트웍스 스타트업의 상세 평가', '보통', '양호', '보통', '보통', 6);
+    (1, 1, '2024-01-01', 100000000, 20000000, 15000000, 5000, 20, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (2, 1, '2024-02-01', 120000000, 25000000, 18000000, 5500, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (3, 1, '2024-03-01', 150000000, 30000000, 22000000, 6000, 25, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (4, 1, '2024-04-01', 140000000, 28000000, 21000000, 5800, 23, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (5, 1, '2024-05-01', 160000000, 32000000, 24000000, 6200, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (6, 1, '2024-06-01', 170000000, 34000000, 25500000, 6400, 27, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (7, 1, '2024-07-01', 180000000, 36000000, 27000000, 6600, 28, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (8, 1, '2024-08-01', 190000000, 38000000, 28500000, 6800, 29, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (9, 1, '2024-09-01', 200000000, 40000000, 30000000, 7000, 30, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (10, 1, '2024-10-01', 210000000, 42000000, 31500000, 7200, 31, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (11, 1, '2024-11-01', 220000000, 44000000, 33000000, 7400, 32, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (12, 1, '2024-12-01', 230000000, 46000000, 34500000, 7600, 33, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    -- startup_id = 2
+    (13, 2, '2024-01-01', 110000000, 21000000, 16000000, 5100, 21, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (14, 2, '2024-02-01', 90000000, -5000000, -8000000, 4900, 20, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (15, 2, '2024-03-01', 130000000, 26000000, 20000000, 5300, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (16, 2, '2024-04-01', 85000000, -10000000, -12000000, 4800, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (17, 2, '2024-05-01', 150000000, 30000000, 22000000, 5500, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (18, 2, '2024-06-01', 160000000, 32000000, 24000000, 5700, 25, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (19, 2, '2024-07-01', 180000000, 36000000, 27000000, 5900, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (20, 2, '2024-08-01', 170000000, -20000000, -15000000, 5800, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (21, 2, '2024-09-01', 200000000, 40000000, 30000000, 6100, 27, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (22, 2, '2024-10-01', 210000000, 42000000, 31000000, 6200, 28, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (23, 2, '2024-11-01', 220000000, 44000000, 32000000, 6300, 29, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (24, 2, '2024-12-01', 190000000, -1000000, -500000, 6000, 28, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+
+    -- startup_id = 3
+    (25, 3, '2024-01-01', 80000000, -2000000, -5000000, 4200, 15, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (26, 3, '2024-02-01', 95000000, 18000000, 14000000, 4500, 16, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (27, 3, '2024-03-01', 120000000, 25000000, 20000000, 5000, 17, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (28, 3, '2024-04-01', 87000000, -7000000, -10000000, 4300, 15, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (29, 3, '2024-05-01', 130000000, 28000000, 21000000, 5200, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (30, 3, '2024-06-01', 140000000, 30000000, 22000000, 5400, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (31, 3, '2024-07-01', 125000000, -3000000, -7000000, 5100, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (32, 3, '2024-08-01', 135000000, 27000000, 21000000, 5300, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (33, 3, '2024-09-01', 150000000, 32000000, 25000000, 5500, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (34, 3, '2024-10-01', 140000000, 29000000, 23000000, 5400, 20, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (35, 3, '2024-11-01', 130000000, -1000000, -500000, 5200, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (36, 3, '2024-12-01', 120000000, -3000000, -6000000, 5000, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+
+    -- startup_id = 4
+    (37, 4, '2024-01-01', 100000000, 20000000, 15000000, 5100, 21, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (38, 4, '2024-02-01', 90000000, -5000000, -10000000, 4900, 20, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (39, 4, '2024-03-01', 120000000, 25000000, 18000000, 5300, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (40, 4, '2024-04-01', 87000000, -10000000, -12000000, 4700, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (41, 4, '2024-05-01', 125000000, 26000000, 20000000, 5400, 23, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (42, 4, '2024-06-01', 140000000, 30000000, 22000000, 5500, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (43, 4, '2024-07-01', 130000000, 28000000, 21000000, 5300, 23, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (44, 4, '2024-08-01', 145000000, 32000000, 25000000, 5600, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (45, 4, '2024-09-01', 150000000, 34000000, 26000000, 5700, 25, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (46, 4, '2024-10-01', 160000000, 35000000, 27000000, 5800, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (47, 4, '2024-11-01', 155000000, 33000000, 26000000, 5700, 25, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (48, 4, '2024-12-01', 140000000, -5000000, -8000000, 5400, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+
+    -- startup_id = 5
+    (49, 5, '2024-01-01', 95000000, -3000000, -5000000, 4500, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (50, 5, '2024-02-01', 105000000, 18000000, 14000000, 4600, 19, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (51, 5, '2024-03-01', 120000000, 25000000, 20000000, 4900, 20, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (52, 5, '2024-04-01', 85000000, -5000000, -8000000, 4200, 18, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (53, 5, '2024-05-01', 130000000, 28000000, 22000000, 5100, 21, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (54, 5, '2024-06-01', 140000000, 30000000, 24000000, 5200, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (55, 5, '2024-07-01', 135000000, 28000000, 23000000, 5000, 21, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (56, 5, '2024-08-01', 145000000, 32000000, 25000000, 5300, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (57, 5, '2024-09-01', 150000000, 34000000, 27000000, 5400, 23, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (58, 5, '2024-10-01', 160000000, 35000000, 28000000, 5600, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (59, 5, '2024-11-01', 140000000, -2000000, -4000000, 5200, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (60, 5, '2024-12-01', 130000000, -4000000, -7000000, 5000, 21, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+
+    -- startup_id = 6
+    (61, 6, '2024-01-01', 150000000, 25000000, 20000000, 5500, 23, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (62, 6, '2024-02-01', 140000000, -3000000, -7000000, 5300, 22, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (63, 6, '2024-03-01', 160000000, 32000000, 27000000, 5800, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (64, 6, '2024-04-01', 155000000, 30000000, 25000000, 5700, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (65, 6, '2024-05-01', 170000000, 34000000, 28000000, 5900, 25, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (66, 6, '2024-06-01', 180000000, 36000000, 29000000, 6000, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (67, 6, '2024-07-01', 190000000, 38000000, 30000000, 6200, 27, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (68, 6, '2024-08-01', 160000000, -20000000, -18000000, 5500, 24, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (69, 6, '2024-09-01', 200000000, 40000000, 32000000, 6500, 28, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (70, 6, '2024-10-01', 210000000, 42000000, 34000000, 6600, 29, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (71, 6, '2024-11-01', 190000000, -5000000, -8000000, 6100, 27, CURRENT_TIMESTAMP, 'ADMIN_INPUT'),
+    (72, 6, '2024-12-01', 180000000, 35000000, 28000000, 6000, 26, CURRENT_TIMESTAMP, 'ADMIN_INPUT');
+
+INSERT INTO startup_annualmetrics (annual_id,
+                                   startup_id,
+                                   year,
+                                   annual_revenue,
+                                   operating_profit,
+                                   net_profit,
+                                   total_asset,
+                                   created_at,
+                                   data_source,
+                                   investment_round)
+VALUES
+    -- startup_id = 1
+    (1, 1, 2021, 1200000000, 240000000, 180000000, 500000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (2, 1, 2022, 1500000000, 300000000, 220000000, 600000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (3, 1, 2023, 1800000000, 360000000, 270000000, 700000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Pre-A'),
+
+    -- startup_id = 2
+    (4, 2, 2021, 1300000000, 260000000, 190000000, 520000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', NULL),
+    (5, 2, 2022, 1600000000, 320000000, 240000000, 620000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (6, 2, 2023, 1900000000, 380000000, 280000000, 720000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+
+    -- startup_id = 3
+    (7, 3, 2021, 1400000000, 280000000, 210000000, 540000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (8, 3, 2022, 1700000000, 340000000, 250000000, 640000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Pre-A'),
+    (9, 3, 2023, 2000000000, 400000000, 300000000, 740000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Pre-A'),
+
+    -- startup_id = 4
+    (10, 4, 2021, 1250000000, 250000000, 185000000, 505000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (11, 4, 2022, 1550000000, 310000000, 225000000, 605000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (12, 4, 2023, 1850000000, 370000000, 275000000, 705000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Pre-A'),
+
+    -- startup_id = 5
+    (13, 5, 2021, 1350000000, 270000000, 200000000, 530000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Series A'),
+    (14, 5, 2022, 1650000000, 330000000, 250000000, 630000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Series A'),
+    (15, 5, 2023, 1950000000, 390000000, 290000000, 730000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Series B'),
+
+    -- startup_id = 6
+    (16, 6, 2021, 1450000000, 290000000, 220000000, 550000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Seed'),
+    (17, 6, 2022, 1750000000, 350000000, 260000000, 650000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Series A'),
+    (18, 6, 2023, 2050000000, 410000000, 310000000, 750000000, CURRENT_TIMESTAMP, 'ANNUAL_REPORT', 'Series B');
+

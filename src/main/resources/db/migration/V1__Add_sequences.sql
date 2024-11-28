@@ -12,3 +12,18 @@ CREATE SEQUENCE IF NOT EXISTS ssi_seq
     MINVALUE 1
     NO MAXVALUE
     CACHE 1;
+
+-- 새로운 시퀀스 추가
+CREATE SEQUENCE IF NOT EXISTS monthly_metrics_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE SEQUENCE IF NOT EXISTS annual_metrics_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
