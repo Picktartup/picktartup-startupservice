@@ -4,7 +4,6 @@ import com.picktartup.startup.dto.AnnualMetricsResponse;
 import com.picktartup.startup.dto.MetricsChartResponse;
 import com.picktartup.startup.dto.MonthlyMetricsResponse;
 import com.picktartup.startup.dto.StartupElasticsearch;
-import com.picktartup.startup.dto.StartupResponse;
 import com.picktartup.startup.dto.StartupServiceRequest;
 
 import java.util.List;

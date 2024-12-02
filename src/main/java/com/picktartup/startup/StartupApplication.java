@@ -18,12 +18,5 @@ public class StartupApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StartupApplication.class, args);
 	}
-
-	@Bean
-	CommandLineRunner testMongoConnection(MongoTemplate mongoTemplate) {
-		return args -> {
-			System.out.println("MongoDB 연결 테스트 시작...");
-			System.out.println("MongoDB 데이터베이스 이름: " + mongoTemplate.getDb().getName());
-		};
-	}
+	
 }
