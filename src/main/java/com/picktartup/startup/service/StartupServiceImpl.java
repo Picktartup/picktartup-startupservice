@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -278,6 +279,20 @@ public class StartupServiceImpl implements StartupService {
                     .collect(Collectors.toList());
         }
     }
+
+
+    @Transactional
+    @Override
+    public void updateCampaignId(SetCampaignIdRequest request) {
+        Startup startup = startupRepository.findById(request.getStartupId())
+                .orElseThrow(() -> new RuntimeException("Startup not found with ID: " + request.getStartupId()));
+
+        startup.setCampaignId(request.getCampaignId());
+        startupRepository.save(startup);
+
+        log.info("Updated campaignId for startupId {}: {}", request.getStartupId(), request.getCampaignId());
+    }
+
 
 
 }

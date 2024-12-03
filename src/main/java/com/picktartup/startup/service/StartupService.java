@@ -3,6 +3,7 @@ package com.picktartup.startup.service;
 import com.picktartup.startup.dto.AnnualMetricsResponse;
 import com.picktartup.startup.dto.MetricsChartResponse;
 import com.picktartup.startup.dto.MonthlyMetricsResponse;
+import com.picktartup.startup.dto.SetCampaignIdRequest;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
 
@@ -21,4 +22,5 @@ public interface StartupService {
     List<MonthlyMetricsResponse> getMonthlyMetrics(Long startupId);
     List<MetricsChartResponse> getMetricsForChart(Long startupId, String period);
 
+    void updateCampaignId(SetCampaignIdRequest request);
 }
