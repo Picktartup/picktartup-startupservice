@@ -4,6 +4,7 @@ import com.picktartup.startup.common.dto.ApiResponse;
 import com.picktartup.startup.dto.AnnualMetricsResponse;
 import com.picktartup.startup.dto.MetricsChartResponse;
 import com.picktartup.startup.dto.MonthlyMetricsResponse;
+import com.picktartup.startup.dto.SetCampaignIdRequest;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
 import com.picktartup.startup.service.StartupService;
@@ -111,5 +112,14 @@ public class StartupController {
     ) {
         return ResponseEntity.ok(startupService.getMetricsForChart(startupId, period));
     }
-    
+
+
+    // PATCH 요청으로 campaignId 업데이트
+    @PatchMapping("/{startupId}/campaign")
+    public ResponseEntity<String> updateCampaignId(
+            @PathVariable Long startupId,
+            @RequestBody SetCampaignIdRequest request) {
+        startupService.updateCampaignId(new SetCampaignIdRequest(startupId, request.getCampaignId()));
+        return ResponseEntity.ok("Campaign ID updated successfully");
+    }
 }
