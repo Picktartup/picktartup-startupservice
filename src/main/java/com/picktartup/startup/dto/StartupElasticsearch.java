@@ -84,4 +84,7 @@ public class StartupElasticsearch {
 
     @Field(name = "establishment_date", type = FieldType.Text)
     private String establishmentDate;
+
+    @Field(name ="industry_type", type = FieldType.Text)
+    private String industryType;
 }

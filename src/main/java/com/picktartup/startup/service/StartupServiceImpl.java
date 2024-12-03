@@ -160,6 +160,7 @@ public class StartupServiceImpl implements StartupService {
                 .page(startup.getPage())
                 .establishmentDate(startup.getEstablishmentDate())
                 .current_round(startup.getInvestmentRound())
+                .industry_type(startup.getIndustryType())
                 .build();
     }
 
@@ -204,6 +205,7 @@ public class StartupServiceImpl implements StartupService {
                                 s3Bucket,
                                 awsRegion,
                                 startup.getName().toLowerCase()))
+                        .industry_type(startup.getIndustryType())
                         .build())
                 .collect(Collectors.toList());
     }

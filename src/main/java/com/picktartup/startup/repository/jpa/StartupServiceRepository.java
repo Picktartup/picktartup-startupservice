@@ -12,7 +12,10 @@ import java.util.List;
 public interface StartupServiceRepository extends JpaRepository<Startup, Long> {
 
     @EntityGraph(attributePaths = {"startupDetails", "ssi"})
-    @Query("SELECT s FROM Startup s ORDER BY s.fundingProgress DESC")
+    @Query("SELECT DISTINCT s FROM Startup s " +
+            "LEFT JOIN FETCH s.startupDetails " +
+            "LEFT JOIN FETCH s.ssi " +
+            "ORDER BY s.fundingProgress DESC")
     List<Startup> findTop6ByOrderByFundingProgressDesc();
 
 
