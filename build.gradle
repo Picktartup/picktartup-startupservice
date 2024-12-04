@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	implementation 'org.jsoup:jsoup:1.15.4'
 
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	implementation 'org.flywaydb:flyway-core'
