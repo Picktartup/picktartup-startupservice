@@ -8,5 +8,29 @@ spring:
     rest:
       uris: http://localhost:9200
 
+
+  task:
+    scheduling:
+      pool:
+        size: 2
+      thread-name-prefix: scheduled-task-
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${AWS_S3_BUCKET}
+    region:
+      static: ${AWS_REGION}
+    stack:
+      auto: false
+
+
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+
 server:
   port: 8080

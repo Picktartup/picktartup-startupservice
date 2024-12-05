@@ -7,13 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface StartupServiceRepository extends JpaRepository<Startup, Long> {
 
-    @EntityGraph(attributePaths = {"wallet", "startupDetails", "ssi"})
-    @Query("SELECT s FROM Startup s ORDER BY s.fundingProgress DESC")
+    @EntityGraph(attributePaths = {"startupDetails", "ssi"})
+    @Query("SELECT DISTINCT s FROM Startup s " +
+            "LEFT JOIN FETCH s.startupDetails " +
+            "LEFT JOIN FETCH s.ssi " +
+            "ORDER BY s.fundingProgress DESC")
     List<Startup> findTop6ByOrderByFundingProgressDesc();
+
 
 }

@@ -1,4 +1,3 @@
-// src/main/java/com/picktartup/startup/dto/StartupElasticsearch.java
 package com.picktartup.startup.dto;
 
 import lombok.*;
@@ -85,4 +84,7 @@ public class StartupElasticsearch {
 
     @Field(name = "establishment_date", type = FieldType.Text)
     private String establishmentDate;
+
+    @Field(name ="industry_type", type = FieldType.Text)
+    private String industryType;
 }

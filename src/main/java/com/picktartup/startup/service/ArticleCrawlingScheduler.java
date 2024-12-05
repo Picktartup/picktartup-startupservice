@@ -24,8 +24,8 @@ public class ArticleCrawlingScheduler {
     private final StartupServiceRepository startupRepository;
 
 
-    //@Scheduled(fixedRate = 60000)  // 테스트용 60초
-    @Scheduled(cron = "0 0 3 * * ?")  // 실제 운영 (매일 새벽 3시)
+    @Scheduled(fixedRate = 60000)  // 테스트용 60초
+    //@Scheduled(cron = "0 0 3 * * ?")  // 실제 운영 (매일 새벽 3시)
     public void scheduledCrawling() {
         String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         log.info("Starting scheduled article crawling at {}", currentTime);

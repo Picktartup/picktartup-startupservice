@@ -1,8 +1,11 @@
 package com.picktartup.startup.service;
 
+import com.picktartup.startup.dto.AnnualMetricsResponse;
+import com.picktartup.startup.dto.MetricsChartResponse;
+import com.picktartup.startup.dto.MonthlyMetricsResponse;
+import com.picktartup.startup.dto.SetCampaignIdRequest;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
-import com.picktartup.startup.entity.Startup;
 
 import java.util.List;
 
@@ -13,4 +16,11 @@ public interface StartupService {
 
     StartupServiceRequest getStartupDetailsFromPostgresql(Long startupId);
     StartupServiceRequest getStartupDetailsFromElasticsearch(Long startupId);
+
+    List<StartupServiceRequest> getAllStartupsWithLogoUrl();
+    List<AnnualMetricsResponse> getAnnualMetrics(Long startupId);
+    List<MonthlyMetricsResponse> getMonthlyMetrics(Long startupId);
+    List<MetricsChartResponse> getMetricsForChart(Long startupId, String period);
+
+    void updateCampaignId(SetCampaignIdRequest request);
 }

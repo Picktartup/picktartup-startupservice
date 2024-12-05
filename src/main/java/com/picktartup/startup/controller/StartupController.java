@@ -1,6 +1,10 @@
 package com.picktartup.startup.controller;
 
 import com.picktartup.startup.common.dto.ApiResponse;
+import com.picktartup.startup.dto.AnnualMetricsResponse;
+import com.picktartup.startup.dto.MetricsChartResponse;
+import com.picktartup.startup.dto.MonthlyMetricsResponse;
+import com.picktartup.startup.dto.SetCampaignIdRequest;
 import com.picktartup.startup.dto.StartupElasticsearch;
 import com.picktartup.startup.dto.StartupServiceRequest;
 import com.picktartup.startup.service.StartupService;
@@ -81,5 +85,41 @@ public class StartupController {
         response.put("data", startupDetails);
 
         return ResponseEntity.ok(response);
+    }
+
+    // S3에서 스타트업 로고 가져오기
+    @GetMapping("/logo-urls")
+    public ResponseEntity<List<StartupServiceRequest>> getAllStartupLogos() {
+        List<StartupServiceRequest> startups = startupService.getAllStartupsWithLogoUrl();
+        return ResponseEntity.ok(startups);
+    }
+
+
+    @GetMapping("/{startupId}/metrics/annual")
+    public ResponseEntity<List<AnnualMetricsResponse>> getAnnualMetrics(@PathVariable Long startupId) {
+        return ResponseEntity.ok(startupService.getAnnualMetrics(startupId));
+    }
+
+    @GetMapping("/{startupId}/metrics/monthly")
+    public ResponseEntity<List<MonthlyMetricsResponse>> getMonthlyMetrics(@PathVariable Long startupId) {
+        return ResponseEntity.ok(startupService.getMonthlyMetrics(startupId));
+    }
+
+    @GetMapping("/{startupId}/metrics/chart")
+    public ResponseEntity<List<MetricsChartResponse>> getMetricsForChart(
+            @PathVariable Long startupId,
+            @RequestParam(defaultValue = "monthly") String period
+    ) {
+        return ResponseEntity.ok(startupService.getMetricsForChart(startupId, period));
+    }
+
+
+    // PATCH 요청으로 campaignId 업데이트
+    @PatchMapping("/{startupId}/campaign")
+    public ResponseEntity<String> updateCampaignId(
+            @PathVariable Long startupId,
+            @RequestBody SetCampaignIdRequest request) {
+        startupService.updateCampaignId(new SetCampaignIdRequest(startupId, request.getCampaignId()));
+        return ResponseEntity.ok("Campaign ID updated successfully");
     }
 }
