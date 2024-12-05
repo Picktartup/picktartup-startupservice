@@ -18,7 +18,8 @@ public class StartupCrawling {
             "아정네트웍스", "ajungnetworks",
             "바인드", "bind",
             "뉴닉", "newneek",
-            "라프텔","laftel"
+            "라프텔","laftel" ,
+            "레브잇","levit"
             // 필요한 매핑 추가
     );
 
