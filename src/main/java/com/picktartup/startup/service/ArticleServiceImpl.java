@@ -53,12 +53,12 @@ public class ArticleServiceImpl implements ArticleService {
                     .timeout(5000)
                     .get();
 
-            Elements newsItems = doc.select("a.block-wrap.clickable.rounded-border");
+            Elements newsItems = doc.select("div[to]");
 
 
             for (Element newsItem : newsItems) {
-                String title = newsItem.select("h3.text-16.text-bold.mt-4.mb-16.text-truncate-from-2nd").text().trim();
-                String articleUrl = newsItem.attr("href");
+                String title = newsItem.select("div.text-truncate-from-2nd.text-16.mb-8").text().trim();
+                String articleUrl = newsItem.attr("to");
 
                 if (!articleUrl.startsWith("http")) {
                     articleUrl = "https://thevc.kr" + articleUrl;
