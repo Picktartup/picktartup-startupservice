@@ -3,10 +3,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    # MongoDB 설정 추가
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/news_database  # MongoDB URI
+
   elasticsearch:
     rest:
       uris: http://localhost:9200
@@ -29,6 +26,11 @@ cloud:
       static: ${AWS_REGION}
     stack:
       auto: false
+
+
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
 
 server:
   port: 8080

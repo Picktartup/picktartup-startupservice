@@ -23,5 +23,4 @@ spring:
     elasticsearch:
       rest:
         uris: http://localhost:9200
-    mongodb:
-      uri: mongodb://localhost:27017/news_database  # MongoDB URI
+

@@ -1,7 +1,3 @@
-DROP TABLE IF EXISTS startup CASCADE;
-DROP TABLE IF EXISTS startupdetails CASCADE;
-DROP TABLE IF EXISTS ssi CASCADE;
-
 
 CREATE TABLE startup (
                          startup_id BIGINT NOT NULL PRIMARY KEY,
@@ -22,7 +18,7 @@ CREATE TABLE startup (
 
 CREATE TABLE startup_details (
                                  startup_id BIGINT NOT NULL PRIMARY KEY,
-                                 description VARCHAR(200) NOT NULL,
+                                 description VARCHAR(500) NOT NULL,
                                  investment_status VARCHAR(10) NOT NULL,
                                  address VARCHAR(100) NOT NULL,
                                  ceo_name VARCHAR(10) NOT NULL,

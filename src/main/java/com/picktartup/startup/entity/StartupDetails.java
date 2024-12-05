@@ -33,7 +33,7 @@ public class StartupDetails {
     @JoinColumn(name = "startup_id" , nullable = false)
     private Startup startup;
 
-    @Column(name = "description", nullable = false, length = 200)
+    @Column(name = "description", nullable = false, length = 500)
     private String description;
 
     @Column(name = "investment_status", nullable = false, length = 10)
