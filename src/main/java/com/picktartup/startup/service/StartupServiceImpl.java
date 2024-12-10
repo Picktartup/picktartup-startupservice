@@ -140,6 +140,7 @@ public class StartupServiceImpl implements StartupService {
                 .campaign_id(startup.getCampaignId())
                 .expected_roi(startup.getStartupDetails().getExpectedRoi())
                 .roi(startup.getStartupDetails().getRoi())
+                .logoUrl(startup.getLogoUrl())
                 .build();
     }
 

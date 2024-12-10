@@ -3,12 +3,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
   elasticsearch:
     rest:
       uris: http://localhost:9200
-
-
   task:
     scheduling:
       pool:
@@ -26,11 +23,6 @@ cloud:
       static: ${AWS_REGION}
     stack:
       auto: false
-
-
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
 
 server:
   port: 8080
